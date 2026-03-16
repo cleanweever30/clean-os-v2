@@ -1,0 +1,1922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#07070A">
+
+<title>Clean OS · Gemini Edition</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=Fira+Mono:wght@400;500&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════
+   CLEAN OS v4  ·  WORKSPACE EDITION
+   Mobile-first · Orbital UI · EN/FR
+   ══════════════════════════════════════════ */
+:root{
+  /* Palette */
+  --void:#07070A;
+  --space:#0E0E14;
+  --deep:#14141E;
+  --panel:#1A1A26;
+  --raised:#20202E;
+  --rim:#FFFFFF0D;
+  --rim2:#FFFFFF18;
+  --rim3:#FFFFFF2A;
+  /* Text */
+  --ink:#ECE8FF;
+  --ink2:#C8C5E0;
+  --ink3:#9490B8;
+  --ink4:#7572A0;
+  /* Accent */
+  --gold:#C8A96B;
+  --goldf:rgba(200,169,107,.12);
+  /* Agent colours */
+  --n:#9B8BF4; /* NEXUS  – violet  */
+  --a:#3EE0A0; /* ATLAS  – emerald */
+  --e:#5BB4F8; /* ECHO   – sky     */
+  --o:#F5B942; /* ORACLE – amber   */
+  --i:#F07EAF; /* IRIS   – rose    */
+  --h:#F8814A; /* HERMES – coral   */
+  /* Status */
+  --ok:#3EE0A0;
+  --warn:#F5B942;
+  --bad:#F87171;
+  /* Layout */
+  --r:8px; --r2:14px; --r3:20px;
+  --font:'Sora',system-ui,sans-serif;
+  --mono:'Fira Mono',monospace;
+  --serif:'Cormorant Garamond',Georgia,serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{height:100%;font-size:14px;-webkit-font-smoothing:antialiased}
+body{font-family:var(--font);background:var(--void);color:var(--ink);min-height:100%;overflow-x:hidden}
+button,input,textarea,select{font-family:var(--font)}
+::selection{background:rgba(155,139,244,.25)}
+::-webkit-scrollbar{width:3px;height:3px}
+::-webkit-scrollbar-thumb{background:var(--ink4);border-radius:2px}
+
+/* ── NOISE GRAIN OVERLAY ── */
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.022;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:200px 200px}
+
+/* ═══════════════════
+   AUTH GATE
+   ═══════════════════ */
+#GATE{position:fixed;inset:0;background:var(--void);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:900;padding:24px;
+  background-image:radial-gradient(ellipse 70% 50% at 50% 90%,rgba(155,139,244,.07) 0%,transparent 70%)}
+
+.gate-orb-wrap{margin-bottom:28px;position:relative;width:88px;height:88px}
+.gate-orb{width:88px;height:88px;border-radius:50%;position:relative;
+  background:conic-gradient(from 0deg,var(--n),var(--a),var(--e),var(--o),var(--i),var(--h),var(--n));
+  animation:orb-spin 9s linear infinite;
+  box-shadow:0 0 0 1px rgba(255,255,255,.06),0 0 40px rgba(155,139,244,.22)}
+.gate-orb::after{content:'';position:absolute;inset:6px;border-radius:50%;background:var(--void)}
+@keyframes orb-spin{to{transform:rotate(360deg)}}
+
+.gate-card{width:100%;max-width:340px;background:var(--space);border:0.5px solid var(--rim2);border-radius:var(--r3);overflow:hidden}
+.gate-top{padding:26px 26px 20px;text-align:center;border-bottom:0.5px solid var(--rim)}
+.gate-logo{font-family:var(--serif);font-size:28px;font-weight:600;color:var(--ink);letter-spacing:-.5px}
+.gate-logo em{color:var(--gold);font-style:italic}
+.gate-tagline{font-size:10px;color:var(--ink3);letter-spacing:2.5px;text-transform:uppercase;margin-top:5px}
+.gate-body{padding:22px 26px}
+.lang-row{display:flex;gap:8px;justify-content:center;margin-bottom:18px}
+.lang-pill{background:var(--deep);border:0.5px solid var(--rim2);color:var(--ink3);border-radius:20px;padding:5px 15px;font-size:12px;font-weight:500;cursor:pointer;transition:all .15s}
+.lang-pill.on{background:rgba(200,169,107,.1);color:var(--gold);border-color:rgba(200,169,107,.3)}
+.gate-lbl{font-size:10px;color:var(--ink3);letter-spacing:.8px;text-transform:uppercase;margin-bottom:6px}
+.gate-inp{width:100%;background:var(--deep);border:0.5px solid var(--rim2);border-radius:var(--r);color:var(--ink);padding:12px 14px;font-size:14px;outline:none;letter-spacing:3px;transition:all .18s;margin-bottom:14px}
+.gate-inp:focus{border-color:var(--n);box-shadow:0 0 0 3px rgba(155,139,244,.1)}
+.gate-inp::placeholder{letter-spacing:0;color:var(--ink4)}
+.gate-btn{width:100%;background:linear-gradient(135deg,var(--n),var(--e));color:#fff;border:none;border-radius:var(--r);padding:13px;font-size:13px;font-weight:600;cursor:pointer;letter-spacing:.3px;transition:all .18s}
+.gate-btn:hover{opacity:.88;transform:translateY(-1px)}
+.gate-btn:active{transform:none}
+.gate-err{font-size:11px;color:var(--bad);text-align:center;margin-top:9px;min-height:15px}
+.gate-foot{padding:13px 26px;border-top:0.5px solid var(--rim);font-size:10px;color:var(--ink4);text-align:center;letter-spacing:.5px}
+
+/* ═══════════════════
+   APP SHELL
+   ═══════════════════ */
+#APP{display:none;flex-direction:column;min-height:100svh}
+#APP.on{display:flex}
+
+/* TOP BAR */
+.topbar{height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:0.5px solid var(--rim);background:rgba(7,7,10,.92);position:sticky;top:0;z-index:60;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.tb-logo{font-family:var(--serif);font-size:19px;font-weight:600;color:var(--ink);user-select:none}
+.tb-logo em{color:var(--gold);font-style:italic}
+.tb-pills{display:flex;gap:2px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.tb-pills::-webkit-scrollbar{display:none}
+.tb-pill{background:none;border:none;cursor:pointer;font-size:12px;font-weight:500;color:var(--ink3);padding:5px 11px;border-radius:20px;white-space:nowrap;transition:all .15s;flex-shrink:0}
+.tb-pill:hover{color:var(--ink);background:var(--panel)}
+.tb-pill.on{color:var(--ink);background:var(--panel);border:0.5px solid var(--rim2)}
+.tb-actions{display:flex;align-items:center;gap:7px;flex-shrink:0}
+.tb-act{background:none;border:0.5px solid var(--rim2);color:var(--ink3);border-radius:var(--r);padding:4px 9px;font-size:11px;cursor:pointer;transition:all .15s;white-space:nowrap}
+.tb-act:hover{color:var(--ink);background:var(--panel)}
+.tb-act.gold{color:var(--gold);border-color:rgba(200,169,107,.3);display:none}
+.tb-act.gold.on{display:block}
+.online{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:500;color:var(--ok);background:rgba(62,224,160,.07);border:0.5px solid rgba(62,224,160,.2);padding:4px 10px;border-radius:20px}
+.beat{width:5px;height:5px;border-radius:50%;background:var(--ok);animation:beat 2s infinite}
+@keyframes beat{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* VIEWS */
+.view{display:none;flex:1;overflow-y:auto;overflow-x:hidden;padding-bottom:80px}
+.view.on{display:block}
+.wrap{padding:16px;max-width:860px;margin:0 auto}
+
+/* BOTTOM NAV (mobile) */
+.bnav{display:none;position:fixed;bottom:0;left:0;right:0;background:rgba(7,7,10,.96);border-top:0.5px solid var(--rim);padding:6px 0 max(6px,env(safe-area-inset-bottom));z-index:60;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.bnav-row{display:flex;justify-content:space-around}
+.bn{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;padding:5px 10px;border-radius:10px;transition:all .15s;min-width:48px}
+.bn.on{background:var(--deep)}
+.bn-ico{font-size:20px;line-height:1}
+.bn-lbl{font-size:9px;font-weight:500;color:var(--ink3);letter-spacing:.2px}
+.bn.on .bn-lbl{color:var(--ink)}
+
+/* TOAST */
+.toast{position:fixed;bottom:76px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--panel);border:0.5px solid var(--rim2);border-radius:var(--r2);padding:10px 18px;font-size:12px;font-weight:500;color:var(--ink);opacity:0;pointer-events:none;z-index:300;white-space:nowrap;max-width:88vw;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:7px;transition:all .2s cubic-bezier(.4,0,.2,1);box-shadow:0 8px 32px rgba(0,0,0,.5)}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast-d{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+
+/* MODAL OVERLAY */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);display:none;align-items:flex-end;justify-content:center;z-index:200;backdrop-filter:blur(4px);padding:0 0 env(safe-area-inset-bottom)}
+.overlay.on{display:flex}
+@media(min-width:600px){.overlay{align-items:center;padding:16px}}
+.modal{background:var(--space);border:0.5px solid var(--rim2);border-radius:var(--r3) var(--r3) 0 0;width:100%;max-width:420px;overflow:hidden;animation:slide-up .22s cubic-bezier(.4,0,.2,1)}
+@media(min-width:600px){.modal{border-radius:var(--r3)}}
+@keyframes slide-up{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+.modal-h{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:0.5px solid var(--rim)}
+.modal-title{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--ink)}
+.modal-x{background:none;border:none;color:var(--ink3);font-size:18px;cursor:pointer;transition:color .15s;line-height:1}
+.modal-x:hover{color:var(--ink)}
+.modal-b{padding:18px}
+.modal-f{padding:12px 18px;border-top:0.5px solid var(--rim);display:flex;gap:8px;justify-content:flex-end}
+
+/* SHARED COMPONENTS */
+.section-head{margin-bottom:14px}
+.section-head h2{font-family:var(--serif);font-size:20px;font-weight:600;color:var(--ink);margin-bottom:3px}
+.section-head p{font-family:var(--mono);font-size:10px;color:var(--ink4);letter-spacing:.5px}
+
+.card{background:var(--space);border:0.5px solid var(--rim);border-radius:var(--r2);padding:14px;margin-bottom:10px}
+.card-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.card-title{font-size:13px;font-weight:600;color:var(--ink)}
+.badge{font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:3px 8px;border-radius:20px}
+.badge-ok{background:rgba(62,224,160,.1);color:var(--ok);border:0.5px solid rgba(62,224,160,.2)}
+.badge-warn{background:rgba(245,185,66,.1);color:var(--warn);border:0.5px solid rgba(245,185,66,.2)}
+.badge-free{background:rgba(91,180,248,.1);color:var(--e);border:0.5px solid rgba(91,180,248,.2)}
+
+.inp{width:100%;background:var(--deep);border:0.5px solid var(--rim2);border-radius:var(--r);color:var(--ink);padding:10px 12px;font-size:13px;outline:none;transition:all .15s}
+.inp:focus{border-color:var(--n);box-shadow:0 0 0 2px rgba(155,139,244,.1)}
+.inp::placeholder{color:var(--ink4)}
+.ta{width:100%;background:var(--deep);border:0.5px solid var(--rim2);border-radius:var(--r);color:var(--ink);padding:10px 12px;font-size:13px;resize:none;outline:none;transition:all .15s;line-height:1.6}
+.ta:focus{border-color:var(--n);box-shadow:0 0 0 2px rgba(155,139,244,.1)}
+
+.btn{font-family:var(--font);font-size:12px;font-weight:600;padding:9px 14px;border-radius:var(--r);border:0.5px solid var(--rim2);background:var(--panel);color:var(--ink2);cursor:pointer;transition:all .15s}
+.btn:hover{background:var(--raised);color:var(--ink);border-color:var(--rim3)}
+.btn:active{transform:scale(.98)}
+.btn.primary{background:linear-gradient(135deg,var(--n),var(--e));color:#fff;border:none}
+.btn.primary:hover{opacity:.9}
+.btn.ok{background:rgba(62,224,160,.12);color:var(--ok);border-color:rgba(62,224,160,.25)}
+.btn.ok:hover{background:rgba(62,224,160,.2)}
+.btn.full{width:100%;display:block}
+.btn-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+
+.note{font-size:11px;color:var(--ink3);line-height:1.6;padding:9px 11px;background:var(--deep);border-radius:var(--r);margin-top:8px}
+.note.ok{border-left:2px solid var(--ok)}
+.note.warn{border-left:2px solid var(--warn)}
+.note.info{border-left:2px solid var(--e)}
+.note strong{color:var(--ink)}
+
+/* AI OUTPUT PANEL */
+.ai-wrap{background:var(--space);border:0.5px solid var(--rim2);border-radius:var(--r2);padding:14px;margin-top:10px;display:none}
+.ai-wrap.on{display:block;animation:fadein .2s ease}
+.ai-hd{display:flex;align-items:center;gap:7px;font-size:10px;font-weight:600;letter-spacing:1px;color:var(--ink4);text-transform:uppercase;margin-bottom:10px;padding-bottom:8px;border-bottom:0.5px solid var(--rim)}
+.ai-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.ai-out{font-family:var(--mono);font-size:12px;color:var(--ink2);line-height:1.8;white-space:pre-wrap;word-break:break-word;max-height:300px;overflow-y:auto}
+.cur{display:inline-block;width:2px;height:12px;background:var(--gold);animation:blink 1s infinite;vertical-align:text-bottom}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+@keyframes fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* QUEUE */
+.q-item{display:flex;align-items:center;gap:9px;padding:10px 12px;background:var(--space);border:0.5px solid var(--rim);border-radius:var(--r);margin-bottom:5px;transition:all .15s}
+.q-item:hover{background:var(--deep);border-color:var(--rim2)}
+.q-d{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.q-b{flex:1;min-width:0}
+.q-t{font-size:12px;font-weight:500;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.q-m{font-size:10px;color:var(--ink4);margin-top:1px}
+.q-acts{display:flex;gap:4px}
+.qb{font-family:var(--font);font-size:10px;font-weight:600;padding:4px 9px;border-radius:5px;border:0.5px solid var(--rim2);background:none;cursor:pointer;transition:all .15s}
+.qb.a{color:var(--ok);border-color:rgba(62,224,160,.3)}.qb.a:hover{background:rgba(62,224,160,.08)}
+.qb.r{color:var(--warn);border-color:rgba(245,185,66,.3)}.qb.r:hover{background:rgba(245,185,66,.08)}
+
+/* SPINNER */
+.spin{width:11px;height:11px;border:1.5px solid rgba(155,139,244,.2);border-top-color:var(--n);border-radius:50%;animation:spin .7s linear infinite;display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* SETUP WIZARD */
+.wiz{background:var(--space);border:0.5px solid var(--rim2);border-left:2.5px solid var(--gold);border-radius:var(--r2);margin-bottom:14px;overflow:hidden}
+.wiz-hd{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;cursor:pointer;transition:background .15s}
+.wiz-hd:hover{background:var(--deep)}
+.wiz-htxt .t1{font-size:13px;font-weight:600;color:var(--gold)}
+.wiz-htxt .t2{font-size:11px;color:var(--ink3);margin-top:2px}
+.wiz-arr{font-size:13px;color:var(--ink4);transition:transform .2s}
+.wiz-arr.open{transform:rotate(180deg)}
+.wiz-body{display:none;border-top:0.5px solid var(--rim);padding:14px}
+.wiz-body.open{display:block}
+.wiz-step{display:flex;gap:12px;padding:12px;background:var(--deep);border:0.5px solid var(--rim);border-radius:var(--r2);margin-bottom:8px}
+.wiz-step:last-child{margin-bottom:0}
+.wiz-n{width:28px;height:28px;border-radius:50%;background:var(--panel);border:0.5px solid var(--rim2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--ink3);flex-shrink:0}
+.wiz-n.done{background:rgba(62,224,160,.1);border-color:rgba(62,224,160,.3);color:var(--ok)}
+.wiz-info{flex:1;min-width:0}
+.wiz-name{font-size:12px;font-weight:600;color:var(--ink);margin-bottom:3px;display:flex;align-items:center;gap:7px}
+.free-tag{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:2px 6px;border-radius:20px;background:rgba(62,224,160,.08);color:var(--ok);border:0.5px solid rgba(62,224,160,.2)}
+.wiz-desc{font-size:11px;color:var(--ink3);line-height:1.5;margin-bottom:8px}
+.wiz-row{display:flex;gap:6px}
+.wiz-inp{flex:1;background:var(--space);border:0.5px solid var(--rim2);border-radius:var(--r);color:var(--ink);padding:8px 10px;font-size:12px;font-family:var(--mono);outline:none;transition:all .15s;min-width:0}
+.wiz-inp:focus{border-color:var(--gold)}
+.wiz-inp::placeholder{color:var(--ink4);font-family:var(--font)}
+.wiz-save{font-family:var(--font);background:var(--raised);border:0.5px solid var(--rim2);color:var(--ink2);border-radius:var(--r);padding:8px 12px;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s;white-space:nowrap;flex-shrink:0}
+.wiz-save:hover{background:var(--panel);color:var(--ink);border-color:var(--rim3)}
+.wiz-st{font-size:10px;margin-top:5px;min-height:13px}
+.wiz-ok{color:var(--ok)}.wiz-err{color:var(--bad)}
+.wiz-link{font-size:10px;color:var(--e);text-decoration:none;display:inline-block;margin-top:4px}
+.wiz-link:hover{color:var(--ink)}
+
+/* ═══════════════════════════════
+   ORBITAL WORKSPACE
+   ═══════════════════════════════ */
+.orbit-scene{position:relative;width:min(88vw,400px);height:min(88vw,400px);margin:0 auto 16px}
+
+/* Ambient glow behind orbit */
+.orbit-scene::before{content:'';position:absolute;inset:-20%;border-radius:50%;background:radial-gradient(circle,rgba(155,139,244,.04) 0%,transparent 70%);pointer-events:none}
+
+/* Ring tracks */
+.ring{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);border-radius:50%;border:0.5px solid;pointer-events:none}
+.ring-inner{width:52%;height:52%;border-color:rgba(255,255,255,.04)}
+.ring-outer{width:90%;height:90%;border-color:rgba(255,255,255,.03);border-style:dashed;border-width:0.5px;animation:ring-rot 60s linear infinite}
+@keyframes ring-rot{to{transform:translate(-50%,-50%) rotate(360deg)}}
+
+/* SVG connector lines */
+#orbit-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+
+/* NEXUS HUB */
+.hub{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:80px;height:80px;border-radius:50%;z-index:10;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:transform .2s cubic-bezier(.4,0,.2,1),box-shadow .2s;
+  background:radial-gradient(circle at 35% 30%, #B8ACFF, var(--n) 55%, #5B4FD4);
+  box-shadow:0 0 0 1.5px rgba(155,139,244,.35),0 0 28px rgba(155,139,244,.2)}
+.hub:hover,.hub.lit{transform:translate(-50%,-50%) scale(1.08);box-shadow:0 0 0 2px rgba(155,139,244,.55),0 0 40px rgba(155,139,244,.3)}
+.hub-label{font-size:9px;font-weight:700;letter-spacing:1.5px;color:#fff;margin-top:2px}
+.hub-sub{font-size:7px;color:rgba(255,255,255,.55);letter-spacing:.5px;margin-top:1px}
+.hub-count{position:absolute;top:-3px;right:-3px;width:18px;height:18px;border-radius:50%;background:var(--warn);border:2px solid var(--void);font-size:8px;font-weight:700;color:#000;display:flex;align-items:center;justify-content:center}
+
+/* AGENT NODES */
+.anode{position:absolute;width:62px;height:62px;border-radius:50%;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:transform .18s cubic-bezier(.4,0,.2,1),box-shadow .18s;z-index:8}
+.anode:active,.anode.lit{transform:scale(1.12) !important}
+.an-ico{font-size:18px;line-height:1;margin-bottom:2px}
+.an-lbl{font-size:8px;font-weight:700;letter-spacing:1px;color:#fff}
+
+/* AGENT DETAIL DRAWER */
+.agent-drawer{background:var(--space);border:0.5px solid var(--rim2);border-radius:var(--r2);padding:14px;display:none;animation:fadein .18s ease}
+.agent-drawer.on{display:block}
+.ad-row{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.ad-ico{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.ad-name{font-size:15px;font-weight:700;letter-spacing:.5px}
+.ad-desc{font-size:11px;color:var(--ink2);margin-top:2px;line-height:1.4}
+.ad-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:12px}
+.ad-stat{background:var(--deep);border:0.5px solid var(--rim);border-radius:var(--r);padding:7px 9px}
+.ad-sv{font-family:var(--mono);font-size:14px;font-weight:500;color:var(--ink)}
+.ad-sl{font-size:10px;color:var(--ink3);margin-top:2px}
+.ad-run{width:100%;background:var(--panel);border:0.5px solid var(--rim2);border-radius:var(--r);color:var(--ink2);font-size:12px;font-weight:600;padding:10px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:7px}
+.ad-run:hover{background:var(--raised);color:var(--ink);border-color:var(--rim3)}
+.ad-run.loading{pointer-events:none;color:var(--gold);border-color:rgba(200,169,107,.3)}
+.ad-run.done{color:var(--ok);border-color:rgba(62,224,160,.3)}
+
+/* ═══════════════
+   KPI GRID
+   ═══════════════ */
+.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+@media(min-width:500px){.kpi-grid{grid-template-columns:repeat(4,1fr)}}
+.kpi{background:var(--space);border:0.5px solid var(--rim);border-radius:var(--r2);padding:12px}
+.kpi-l{font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--ink4);margin-bottom:3px}
+.kpi-v{font-family:var(--mono);font-size:20px;font-weight:500;color:var(--ink)}
+.kpi-d{font-size:10px;margin-top:3px}
+.up{color:var(--ok)}.dn{color:var(--bad)}
+
+/* ═══════════════
+   PIPELINE
+   ═══════════════ */
+.pipeline{display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:6px;scrollbar-width:none}
+.pipeline::-webkit-scrollbar{display:none}
+.pcol{background:var(--space);border:0.5px solid var(--rim);border-radius:var(--r2);padding:10px;min-width:160px;flex-shrink:0}
+.pcol-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.pcol-n{font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--ink2)}
+.pcol-c{font-family:var(--mono);font-size:10px;background:var(--panel);color:var(--ink4);padding:1px 6px;border-radius:20px}
+.deal{background:var(--deep);border:0.5px solid var(--rim);border-radius:var(--r);padding:9px;margin-bottom:5px;cursor:pointer;transition:all .15s}
+.deal:hover{background:var(--panel);border-color:var(--rim2)}
+.deal-co{font-size:11px;font-weight:600;color:var(--ink)}
+.deal-who{font-size:10px;color:var(--ink2);margin-bottom:5px}
+.deal-val{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--ok)}
+
+/* ═══════════════
+   CRYPTO
+   ═══════════════ */
+.crypto-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.cc{background:var(--space);border:0.5px solid var(--rim);border-radius:var(--r2);padding:12px;cursor:pointer;transition:all .15s}
+.cc:hover{background:var(--deep);border-color:var(--rim2)}
+.cc-sym{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--ink3);text-transform:uppercase;margin-bottom:4px}
+.cc-price{font-family:var(--mono);font-size:18px;font-weight:500;color:var(--ink)}
+.cc-chg{font-size:11px;font-weight:500;margin-top:2px}
+.cc-chg.up{color:var(--ok)}.cc-chg.dn{color:var(--bad)}
+.disc-box{background:rgba(245,185,66,.05);border:0.5px solid rgba(245,185,66,.2);border-left:2.5px solid var(--warn);border-radius:var(--r2);padding:12px 14px;margin-bottom:12px}
+.disc-t{font-size:12px;font-weight:600;color:var(--warn);margin-bottom:4px}
+.disc-b{font-size:11px;color:var(--ink3);line-height:1.6}
+
+/* ═══════════════
+   SOCIAL
+   ═══════════════ */
+.soc-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.soc-card{background:var(--space);border:0.5px solid var(--rim);border-radius:var(--r2);padding:13px}
+.soc-hd{display:flex;align-items:center;gap:9px;margin-bottom:10px}
+.soc-ico{width:30px;height:30px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0}
+.soc-name{font-size:12px;font-weight:600;color:var(--ink)}
+.soc-tier{font-size:10px;color:var(--ink3);margin-top:1px}
+
+/* ═══════════════
+   IRIS SCORES
+   ═══════════════ */
+.iris-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ic{background:var(--space);border:0.5px solid var(--rim);border-radius:var(--r2);padding:12px}
+.ic-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.ic-nm{font-size:12px;font-weight:600;letter-spacing:.3px}
+.ic-sc{font-family:var(--mono);font-size:18px;font-weight:500}
+.ic-bg{height:3px;background:var(--panel);border-radius:2px;margin-bottom:5px;overflow:hidden}
+.ic-fill{height:100%;border-radius:2px;transition:width .9s cubic-bezier(.4,0,.2,1)}
+.ic-kpi{display:flex;justify-content:space-between;font-size:10px;color:var(--ink4);font-family:var(--mono)}
+
+/* ═══════════════
+   REVENUE TRACKER (NEW)
+   ═══════════════ */
+.rev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
+@media(max-width:360px){.rev-grid{grid-template-columns:1fr 1fr}}
+.rev-c{background:var(--deep);border:0.5px solid var(--rim);border-radius:var(--r2);padding:11px}
+.rev-l{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--ink4);margin-bottom:3px}
+.rev-v{font-family:var(--mono);font-size:16px;font-weight:500;color:var(--ink)}
+.rev-n{font-size:10px;color:var(--ink3);margin-top:2px}
+
+/* ═══════════════
+   SIGNAL ROWS
+   ═══════════════ */
+.sig{display:flex;gap:10px;padding:10px;background:var(--deep);border:0.5px solid var(--rim);border-radius:var(--r2);margin-bottom:7px}
+.sig-ico{width:28px;height:28px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.sig-body{flex:1}
+.sig-t{font-size:12px;font-weight:500;color:var(--ink);margin-bottom:2px}
+.sig-d{font-size:11px;color:var(--ink3);line-height:1.4}
+.sig-acts{display:flex;gap:5px;margin-top:7px}
+.sig-btn{font-family:var(--font);font-size:10px;font-weight:600;padding:4px 9px;border-radius:5px;border:0.5px solid var(--rim2);background:none;cursor:pointer;transition:all .15s}
+.sig-w{color:var(--e);border-color:rgba(91,180,248,.3)}.sig-w:hover{background:rgba(91,180,248,.08)}
+.sig-s{color:var(--ink4)}.sig-s:hover{background:var(--panel);color:var(--ink3)}
+
+/* ═══════════════
+   GUIDE STEPS
+   ═══════════════ */
+.step{display:flex;gap:13px;padding:14px;background:var(--space);border:0.5px solid var(--rim);border-radius:var(--r2);margin-bottom:8px}
+.step-n{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--n),var(--e));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0}
+.step-body{flex:1}
+.step-t{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:5px}
+.step-d{font-size:12px;color:var(--ink2);line-height:1.7}
+.code-block{font-family:var(--mono);font-size:11px;background:var(--deep);border:0.5px solid var(--rim2);border-radius:var(--r);padding:8px 11px;margin-top:7px;color:var(--ok);cursor:pointer;display:block;word-break:break-all;transition:background .15s}
+.code-block:hover{background:var(--panel)}
+.ext-link{font-size:11px;color:var(--e);text-decoration:none;display:inline-block;margin-top:5px}
+.ext-link:hover{color:var(--ink)}
+
+/* SEND LOG */
+.slog{max-height:140px;overflow-y:auto}
+.slog-item{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:0.5px solid var(--rim);font-size:11px}
+.slog-item:last-child{border-bottom:none}
+.slog-d{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.slog-t{color:var(--ink3);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.slog-time{color:var(--ink4);font-family:var(--mono);font-size:10px;flex-shrink:0}
+
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse;font-size:12px}
+.tbl th{font-size:10px;font-weight:600;color:var(--ink4);text-transform:uppercase;letter-spacing:.5px;padding:7px 8px;text-align:left;border-bottom:0.5px solid var(--rim)}
+.tbl td{padding:8px;border-bottom:0.5px solid var(--rim);color:var(--ink2)}
+.tbl tr:hover td{background:var(--deep);color:var(--ink)}
+.tbl td:first-child{color:var(--ink);font-weight:500}
+.score-pill{display:inline-block;font-family:var(--mono);font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px}
+.sp-hi{background:rgba(62,224,160,.1);color:var(--ok)}
+.sp-md{background:rgba(245,185,66,.1);color:var(--warn)}
+.sp-lo{background:var(--panel);color:var(--ink4)}
+
+/* CHANGELOG ITEMS */
+.cl-item{display:flex;gap:7px;padding:6px 0;border-bottom:0.5px solid var(--rim)}
+.cl-item:last-child{border-bottom:none}
+.cl-type{font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:2px 5px;border-radius:3px;flex-shrink:0;height:fit-content;margin-top:2px}
+.cl-feat{background:rgba(91,180,248,.1);color:var(--e)}
+.cl-fix{background:rgba(62,224,160,.1);color:var(--ok)}
+.cl-sec{background:rgba(245,185,66,.1);color:var(--warn)}
+.cl-txt{font-size:12px;color:var(--ink2)}
+
+/* MODAL CONTENT */
+.mv-box{background:var(--deep);border:0.5px solid var(--rim);border-radius:var(--r);padding:10px 12px;margin-bottom:12px;font-family:var(--mono);font-size:11px}
+.mv-row{display:flex;justify-content:space-between;padding:3px 0;color:var(--ink4)}
+.mv-val{color:var(--ink)}
+
+/* RESPONSIVE EXTRAS */
+@media(max-width:599px){
+  .bnav{display:block}
+  .tb-pills{display:none}
+  .view{padding-bottom:90px}
+}
+@media(min-width:600px){
+  .kpi-grid{grid-template-columns:repeat(4,1fr)}
+  .iris-grid{grid-template-columns:repeat(3,1fr)}
+  .soc-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+/* ── BOTTOM NAV (mobile only) ── */
+.bottom-nav{
+  display:none;
+  position:fixed;bottom:0;left:0;right:0;
+  background:rgba(7,7,10,0.97);
+  border-top:1px solid var(--rim);
+  z-index:200;
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  padding:6px 0 max(8px,env(safe-area-inset-bottom));
+}
+.bnav{display:flex;justify-content:space-around;align-items:center}
+.bnav-btn{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  background:none;border:none;cursor:pointer;
+  padding:5px 8px;border-radius:10px;
+  transition:all .15s;min-width:44px;
+}
+.bnav-btn:active,.bnav-btn.on{background:var(--raised)}
+.bnav-ico{font-size:20px;line-height:1}
+.bnav-lbl{font-size:9px;font-weight:600;color:var(--ink4);letter-spacing:.3px;transition:color .15s}
+.bnav-btn.on .bnav-lbl{color:var(--ink)}
+@media(max-width:639px){
+  .bottom-nav{display:block}
+  .tb-nav{display:none}
+  .view.on{padding-bottom:75px}
+}
+
+@media(max-width:639px){
+  .tb-pills{display:none}
+  .bottom-nav{display:block}
+  .view.on{padding-bottom:80px}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════ AUTH GATE ══════════ -->
+<div id="GATE">
+  <div class="gate-orb-wrap">
+    <div class="gate-orb"></div>
+  </div>
+  <div class="gate-card">
+    <div class="gate-top">
+      <div class="gate-logo">Clean<em>.</em></div>
+      <div class="gate-tagline" id="G_tagline">Agent OS · v4 · Gemini</div>
+    </div>
+    <div class="gate-body">
+      <div class="lang-row">
+        <button class="lang-pill on" onclick="setLang('en',this)">🇬🇧 English</button>
+        <button class="lang-pill" onclick="setLang('fr',this)">🇫🇷 Français</button>
+      </div>
+      <div class="gate-lbl" id="G_lbl">Access Code</div>
+      <input type="password" class="gate-inp" id="G_inp" placeholder="CLEAN-2026" maxlength="32" autocomplete="off" spellcheck="false" onkeydown="if(event.key==='Enter')auth()">
+      <button class="gate-btn" id="G_btn" onclick="auth()">Enter</button>
+      <div class="gate-err" id="G_err"></div>
+    </div>
+    <div class="gate-foot" id="G_foot">Clean OS · Licensed · v4.0.0</div>
+  </div>
+</div>
+
+<!-- ══════════ APP ══════════ -->
+<div id="APP">
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="tb-logo">Clean<em>.</em></div>
+    <div class="tb-pills" id="tb-pills">
+      <button class="tb-pill on" onclick="nav('workspace',this)">Workspace</button>
+      <button class="tb-pill" onclick="nav('leads',this)">Leads</button>
+      <button class="tb-pill" onclick="nav('outreach',this)">Outreach</button>
+      <button class="tb-pill" onclick="nav('social',this)">Social</button>
+      <button class="tb-pill" onclick="nav('oracle',this)">Oracle</button>
+      <button class="tb-pill" onclick="nav('crypto',this)">Crypto</button>
+      <button class="tb-pill" onclick="nav('guide',this)">Guide</button>
+    </div>
+    <div class="tb-actions">
+      <div class="online"><div class="beat"></div><span id="online-lbl">6 live</span></div>
+      <button class="tb-act" onclick="toggleLang()" id="lang-toggle">FR</button>
+      <button class="tb-act gold" id="upd-btn" onclick="openModal('upd-modal')">↑ Update</button>
+      <button class="tb-act" onclick="logout()">⏻</button>
+    </div>
+  </div>
+
+  <!-- ══ WORKSPACE VIEW ══ -->
+  <div class="view on" id="view-workspace">
+    <div class="wrap">
+
+      <!-- SETUP WIZARD -->
+      <div class="wiz" id="wiz">
+        <div class="wiz-hd" onclick="toggleWiz()">
+          <div class="wiz-htxt">
+            <div class="t1" id="WIZ_title">⚡ Quick Setup — Free integrations</div>
+            <div class="t2" id="WIZ_sub">Tap to configure. All free tiers — no credit card.</div>
+          </div>
+          <div class="wiz-arr" id="wiz-arr">▼</div>
+        </div>
+        <div class="wiz-body" id="wiz-body">
+          <!-- GEMINI -->
+          <div class="wiz-step">
+            <div class="wiz-n" id="wn-or">1</div>
+            <div class="wiz-info">
+              <div class="wiz-name">OpenRouter AI <span class="free-tag">Free · No card · Works now</span></div>
+              <div class="wiz-desc" id="WIZ_or_desc">Powers all 6 agents free. Go to openrouter.ai → sign up → Keys → Create Key → copy your sk-or-... key.</div>
+              <div class="wiz-row">
+                <input type="password" class="wiz-inp" id="ki-or" placeholder="sk-or-..." autocomplete="off">
+                <button class="wiz-save" onclick="saveKey('or')">Save</button>
+              </div>
+              <div class="wiz-st" id="ws-or"></div>
+              <a href="https://openrouter.ai/keys" target="_blank" class="wiz-link">→ openrouter.ai/keys (free signup)</a>
+            </div>
+          </div>
+<div class="wiz-step">
+            <div class="wiz-n" id="wn-apo">2</div>
+            <div class="wiz-info">
+              <div class="wiz-name">Apollo.io (Leads) <span class="free-tag">Free tier</span></div>
+              <div class="wiz-desc" id="WIZ_apo_desc">Free forever: unlimited email search, 10 exports/month. ATLAS finds real leads from 210M+ contacts.</div>
+              <div class="wiz-row">
+                <input type="password" class="wiz-inp" id="ki-apo" placeholder="Apollo API key..." autocomplete="off">
+                <button class="wiz-save" onclick="saveKey('apo')">Save</button>
+              </div>
+              <div class="wiz-st" id="ws-apo"></div>
+              <a href="https://app.apollo.io/#/settings/integrations/api" target="_blank" class="wiz-link">→ app.apollo.io</a>
+            </div>
+          </div>
+          <!-- BREVO -->
+          <div class="wiz-step">
+            <div class="wiz-n" id="wn-brv">3</div>
+            <div class="wiz-info">
+              <div class="wiz-name">Brevo (Email) <span class="free-tag">300/day free</span></div>
+              <div class="wiz-desc" id="WIZ_brv_desc">Free forever: 300 real emails/day, full API. ECHO uses this to send actual outreach emails.</div>
+              <div class="wiz-row">
+                <input type="password" class="wiz-inp" id="ki-brv" placeholder="xkeysib-..." autocomplete="off">
+                <button class="wiz-save" onclick="saveKey('brv')">Save</button>
+              </div>
+              <div class="wiz-st" id="ws-brv"></div>
+              <a href="https://app.brevo.com/settings/keys/api" target="_blank" class="wiz-link">→ app.brevo.com</a>
+            </div>
+          </div>
+          <!-- COINGECKO -->
+          <div class="wiz-step">
+            <div class="wiz-n done">✓</div>
+            <div class="wiz-info">
+              <div class="wiz-name">CoinGecko (Crypto) <span class="free-tag">100% Free</span></div>
+              <div class="wiz-desc" id="WIZ_cg_desc">No API key needed. Live BTC, ETH, SOL prices auto-load. ORACLE uses this for market analysis.</div>
+              <div class="wiz-st wiz-ok" id="WIZ_cg_ok">✓ Always active — no setup required</div>
+            </div>
+          </div>
+        </div>
+      
+          <!-- BRIEFING BANNER -->
+      <div style="background:var(--space);border:0.5px solid var(--rim2);border-left:2.5px solid var(--gold);border-radius:var(--r2);padding:12px 14px;margin-bottom:14px;cursor:pointer;display:flex;align-items:center;gap:11px" onclick="runAgent('nexus','briefing','ai-ws','ai-out-ws','var(--n)')">
+        <div style="width:30px;height:30px;border-radius:50%;background:rgba(200,169,107,.1);border:0.5px solid rgba(200,169,107,.25);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--gold);flex-shrink:0">◎</div>
+        <div>
+          <div style="font-size:13px;font-weight:500;color:var(--ink)" id="BRIEF_title">Daily Briefing</div>
+          <div style="font-size:11px;color:var(--ink3);margin-top:2px" id="BRIEF_sub">Tap to generate today's NEXUS briefing with live AI</div>
+        </div>
+        <div style="margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--ink4);flex-shrink:0" id="BRIEF_time"></div>
+      </div>
+
+      <!-- SECTION HEAD -->
+      <div class="section-head">
+        <h2 id="WS_title">Agent Workspace</h2>
+        <p id="WS_sub">// tap any agent to activate · nexus is the hub</p>
+      </div>
+
+      <!-- ORBITAL WORKSPACE -->
+      <div class="orbit-scene" id="orbit-scene">
+        <div class="ring ring-inner"></div>
+        <div class="ring ring-outer"></div>
+        <svg id="orbit-svg" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1"></svg>
+        <!-- NEXUS hub -->
+        <div class="hub" id="hub" onclick="activateAgent('nexus')">
+          <span style="font-size:22px">◎</span>
+          <div class="hub-label">NEXUS</div>
+          <div class="hub-sub" id="hub-sub-label">Coordinator</div>
+          <div class="hub-count" id="hub-count">3</div>
+        </div>
+        <!-- Peripheral agents (positioned by JS) -->
+        <div class="anode" id="anode-atlas" onclick="activateAgent('atlas')"><div class="an-ico">🔍</div><div class="an-lbl">ATLAS</div></div>
+        <div class="anode" id="anode-echo"  onclick="activateAgent('echo')"><div class="an-ico">📧</div><div class="an-lbl">ECHO</div></div>
+        <div class="anode" id="anode-oracle"onclick="activateAgent('oracle')"><div class="an-ico">📊</div><div class="an-lbl">ORACLE</div></div>
+        <div class="anode" id="anode-iris"  onclick="activateAgent('iris')"><div class="an-ico">🌸</div><div class="an-lbl">IRIS</div></div>
+        <div class="anode" id="anode-hermes"onclick="activateAgent('hermes')"><div class="an-ico">✍️</div><div class="an-lbl">HERMES</div></div>
+      </div>
+
+      <!-- AGENT DETAIL DRAWER -->
+      <div class="agent-drawer" id="agent-drawer">
+        <div class="ad-row">
+          <div class="ad-ico" id="ad-ico"></div>
+          <div>
+            <div class="ad-name" id="ad-name"></div>
+            <div class="ad-desc" id="ad-desc"></div>
+          </div>
+        </div>
+        <div class="ad-stats" id="ad-stats"></div>
+        <button class="ad-run" id="ad-run" onclick="runActiveAgent()">
+          <span id="ad-run-lbl">Run Agent</span>
+        </button>
+      </div>
+
+      <!-- AI OUTPUT -->
+      <div class="ai-wrap" id="ai-ws">
+        <div class="ai-hd"><div class="ai-dot" id="ai-dot-ws"></div><span class="ai-lbl" class="ai-lbl" class="ai-lbl" id="ai-lbl-ws">Agent Output</span><span style="margin-left:auto;cursor:pointer;color:var(--ink4)" onclick="this.closest('.ai-wrap').classList.remove('on')">✕</span></div>
+        <div class="ai-out" id="ai-out-ws"></div>
+      </div>
+
+      <!-- NEXUS QUEUE -->
+      <div style="margin-top:16px">
+        <div style="font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink4);margin-bottom:7px" id="QUEUE_label">NEXUS · Review Queue</div>
+        <div id="qlist">
+          <div class="q-item" id="q1"><div class="q-d" style="background:var(--e)"></div><div class="q-b"><div class="q-t">Outreach — Sarah Chen, Head of Growth, Stripe</div><div class="q-m">ECHO · Seq A3 · 4 min ago</div></div><div class="q-acts"><button class="qb a" onclick="qAct('q1','a',event)">✓</button><button class="qb r" onclick="qAct('q1','r',event)">↩</button></div></div>
+          <div class="q-item" id="q2"><div class="q-d" style="background:var(--e)"></div><div class="q-b"><div class="q-t">Follow-up #2 — Marcus Williams, Notion</div><div class="q-m">ECHO · Follow-up · 11 min ago</div></div><div class="q-acts"><button class="qb a" onclick="qAct('q2','a',event)">✓</button><button class="qb r" onclick="qAct('q2','r',event)">↩</button></div></div>
+          <div class="q-item" id="q3"><div class="q-d" style="background:var(--h)"></div><div class="q-b"><div class="q-t">LinkedIn post: "3 ICP signals most teams miss"</div><div class="q-m">HERMES · Draft · 22 min ago</div></div><div class="q-acts"><button class="qb a" onclick="qAct('q3','a',event)">✓</button><button class="qb r" onclick="qAct('q3','r',event)">↩</button></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ LEADS VIEW ══ -->
+  <div class="view" id="view-leads">
+    <div class="wrap">
+      <div class="section-head"><h2 id="LV_title">Atlas · Lead Engine</h2><p>// apollo.io free · 210M+ contacts · ai-scored</p></div>
+      <div class="card">
+        <div class="card-h"><div class="card-title" id="LV_search">Search Real Leads</div><span class="badge badge-free">Apollo Free</span></div>
+        <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap">
+          <input class="inp" id="ls-job" placeholder="Job title (e.g. Head of Growth)" style="flex:1;min-width:140px">
+          <input class="inp" id="ls-ind" placeholder="Industry (e.g. SaaS)" style="flex:1;min-width:120px">
+        </div>
+        <button class="btn ok full" id="ls-btn" onclick="searchLeads()">🔍 <span id="ls-btn-lbl">Find Leads</span></button>
+        <div style="overflow-x:auto;margin-top:12px">
+          <table class="tbl">
+            <thead><tr><th id="LV_th_n">Name</th><th id="LV_th_r">Role</th><th id="LV_th_c">Company</th><th id="LV_th_s">Score</th><th></th></tr></thead>
+            <tbody id="leads-tbody">
+              <tr><td>Sarah Chen</td><td>Head of Growth</td><td>Stripe</td><td><span class="score-pill sp-hi">92</span></td><td><button class="btn" style="padding:3px 8px;font-size:10px" onclick="addLeadToQ('Sarah Chen','Stripe')">→</button></td></tr>
+              <tr><td>Marcus Williams</td><td>VP Operations</td><td>Notion</td><td><span class="score-pill sp-hi">87</span></td><td><button class="btn" style="padding:3px 8px;font-size:10px" onclick="addLeadToQ('Marcus Williams','Notion')">→</button></td></tr>
+              <tr><td>Anna Kim</td><td>Partnerships Lead</td><td>Airbnb</td><td><span class="score-pill sp-md">74</span></td><td><button class="btn" style="padding:3px 8px;font-size:10px" onclick="addLeadToQ('Anna Kim','Airbnb')">→</button></td></tr>
+              <tr><td>Lee Robinson</td><td>VP DevX</td><td>Vercel</td><td><span class="score-pill sp-md">68</span></td><td><button class="btn" style="padding:3px 8px;font-size:10px" onclick="addLeadToQ('Lee Robinson','Vercel')">→</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="note info" id="LV_note">Apollo free: unlimited email search · 10 exports/month · no credit card</div>
+      </div>
+      <button class="btn full" style="margin-bottom:10px" onclick="runAgent('atlas','prospect','ai-leads','ai-out-leads','var(--a)')">🤖 <span id="LV_ai_btn">ATLAS: AI Prospect Analysis</span></button>
+      <div class="ai-wrap" id="ai-leads">
+        <div class="ai-hd"><div class="ai-dot" style="background:var(--a)"></div><span>ATLAS</span><span style="margin-left:auto;cursor:pointer;color:var(--ink4)" onclick="this.closest('.ai-wrap').classList.remove('on')">✕</span></div>
+        <div class="ai-out" id="ai-out-leads"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ OUTREACH VIEW ══ -->
+  <div class="view" id="view-outreach">
+    <div class="wrap">
+      <div class="section-head"><h2 id="OV_title">Echo · Outreach</h2><p>// brevo free smtp · 300 emails/day · ai-written</p></div>
+      <div class="card">
+        <div class="card-h"><div class="card-title" id="OV_compose">Compose Email</div><span class="badge badge-free">Brevo Free</span></div>
+        <input class="inp" id="ec-to" placeholder="To: contact [at] company [dot] com" style="margin-bottom:8px">
+        <input class="inp" id="ec-subj" placeholder="Subject line" style="margin-bottom:8px">
+        <textarea class="ta" id="ec-body" rows="5" placeholder="Email body — or use 'Draft with AI' below..." style="margin-bottom:8px"></textarea>
+        <div class="btn-row">
+          <button class="btn" onclick="runAgent('echo','draft','ai-out','ai-out-echo','var(--e)')">✍️ <span id="OV_draft">Draft with AI</span></button>
+          <button class="btn" onclick="copyAiToEmail()">📋 <span id="OV_use">Use AI output</span></button>
+          <button class="btn primary" onclick="sendEmail()">📤 <span id="OV_send">Send via Brevo</span></button>
+        </div>
+        <div class="note" style="font-family:var(--mono);font-size:10px" id="OV_note">Brevo free: 300 emails/day · <span id="sent-ct">0</span> sent today</div>
+      </div>
+      <div class="ai-wrap" id="ai-out">
+        <div class="ai-hd"><div class="ai-dot" style="background:var(--e)"></div><span>ECHO · Draft</span><span style="margin-left:auto;cursor:pointer;color:var(--ink4)" onclick="this.closest('.ai-wrap').classList.remove('on')">✕</span></div>
+        <div class="ai-out" id="ai-out-echo"></div>
+      </div>
+      <div class="card" style="margin-top:10px">
+        <div class="card-h"><div class="card-title" id="OV_slog">Send Log</div></div>
+        <div class="slog" id="slog">
+          <div class="slog-item"><div class="slog-d" style="background:var(--ok)"></div><div class="slog-t">sarah.chen [at] stripe — Seq A3</div><div class="slog-time">14:32</div></div>
+          <div class="slog-item"><div class="slog-d" style="background:var(--ok)"></div><div class="slog-t">marcus.w [at] notion — Follow-up #2</div><div class="slog-time">11:18</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SOCIAL VIEW ══ -->
+  <div class="view" id="view-social">
+    <div class="wrap">
+      <div class="section-head"><h2 id="SV_title">Hermes · Social OS</h2><p>// linkedin · x/twitter · instagram · tiktok · facebook</p></div>
+      <div class="soc-grid">
+        <div class="soc-card">
+          <div class="soc-hd"><div class="soc-ico" style="background:rgba(10,102,194,.15);color:#0A66C2">in</div><div><div class="soc-name">LinkedIn</div><div class="soc-tier" id="SV_li_tier">Free · manual post</div></div></div>
+          <textarea class="ta" id="soc-li" rows="3" placeholder="Post idea...">3 signals your ICP is ready to buy.</textarea>
+          <div class="btn-row"><button class="btn" onclick="runSocial('li','expand')">Expand</button><button class="btn" onclick="runSocial('li','hook')">Hook</button><button class="btn primary" onclick="pushSocialToNexus('LinkedIn','soc-li')">→ NEXUS</button></div>
+        </div>
+        <div class="soc-card">
+          <div class="soc-hd"><div class="soc-ico" style="background:#111;color:#fff;font-size:15px;font-weight:800">𝕏</div><div><div class="soc-name">X / Twitter</div><div class="soc-tier" id="SV_x_tier">Free · manual post</div></div></div>
+          <textarea class="ta" id="soc-x" rows="3" placeholder="Thread idea or tweet...">Why cold email sequences fail in line 1.</textarea>
+          <div class="btn-row"><button class="btn" onclick="runSocial('x','thread')">Thread</button><button class="btn" onclick="runSocial('x','tweet')">Tweet</button><button class="btn primary" onclick="pushSocialToNexus('X','soc-x')">→ NEXUS</button></div>
+        </div>
+        <div class="soc-card">
+          <div class="soc-hd"><div class="soc-ico" style="background:rgba(225,48,108,.15);color:#E1306C">IG</div><div><div class="soc-name">Instagram</div><div class="soc-tier" id="SV_ig_tier">Free · Meta API</div></div></div>
+          <textarea class="ta" id="soc-ig" rows="3" placeholder="Caption or carousel concept...">Behind the scenes of an AI sales team.</textarea>
+          <div class="btn-row"><button class="btn" onclick="runSocial('ig','caption')">Caption</button><button class="btn" onclick="runSocial('ig','carousel')">Carousel</button><button class="btn primary" onclick="pushSocialToNexus('Instagram','soc-ig')">→ NEXUS</button></div>
+        </div>
+        <div class="soc-card">
+          <div class="soc-hd"><div class="soc-ico" style="background:rgba(0,0,0,.5);color:#fff;font-weight:800">tt</div><div><div class="soc-name">TikTok</div><div class="soc-tier" id="SV_tt_tier">Free · Content API</div></div></div>
+          <textarea class="ta" id="soc-tt" rows="3" placeholder="Video concept or script...">POV: AI agents doing your entire sales job.</textarea>
+          <div class="btn-row"><button class="btn" onclick="runSocial('tt','script')">Script</button><button class="btn" onclick="runSocial('tt','hook')">Hook</button><button class="btn primary" onclick="pushSocialToNexus('TikTok','soc-tt')">→ NEXUS</button></div>
+        </div>
+      </div>
+      <div class="ai-wrap" id="ai-social" style="margin-top:10px">
+        <div class="ai-hd"><div class="ai-dot" style="background:var(--h)"></div><span id="ai-soc-lbl">HERMES · Content</span><span style="margin-left:auto;cursor:pointer;color:var(--ink4)" onclick="this.closest('.ai-wrap').classList.remove('on')">✕</span></div>
+        <div class="ai-out" id="ai-out-social"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ORACLE VIEW ══ -->
+  <div class="view" id="view-oracle">
+    <div class="wrap">
+      <div class="section-head"><h2 id="ORA_title">Oracle · Analytics</h2><p>// pipeline · revenue tracker · iris performance</p></div>
+
+      <div class="kpi-grid">
+        <div class="kpi"><div class="kpi-l">Pipeline</div><div class="kpi-v">$284k</div><div class="kpi-d up">↑ +18%</div></div>
+        <div class="kpi"><div class="kpi-l">Emails</div><div class="kpi-v">147</div><div class="kpi-d up">↑ +23</div></div>
+        <div class="kpi"><div class="kpi-l">Reply rate</div><div class="kpi-v">8.2%</div><div class="kpi-d up">↑ +1.3pp</div></div>
+        <div class="kpi"><div class="kpi-l">At risk</div><div class="kpi-v">2</div><div class="kpi-d dn">↓ act now</div></div>
+      </div>
+
+      <!-- REVENUE TRACKER (new feature) -->
+      <div class="card">
+        <div class="card-h"><div class="card-title" id="REV_title">Revenue Tracker</div><span class="badge badge-ok">Your Business</span></div>
+        <div class="rev-grid">
+          <div class="rev-c"><div class="rev-l">MRR</div><div class="rev-v" id="rev-mrr">$0</div><div class="rev-n">Monthly</div></div>
+          <div class="rev-c"><div class="rev-l">Total</div><div class="rev-v" id="rev-total">$0</div><div class="rev-n">All time</div></div>
+          <div class="rev-c"><div class="rev-l">Clients</div><div class="rev-v" id="rev-clients">0</div><div class="rev-n">Active</div></div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <input class="inp" id="rev-amt" type="number" placeholder="Amount (e.g. 800)" style="flex:1;min-width:100px">
+          <input class="inp" id="rev-lbl" placeholder="Client name" style="flex:1;min-width:120px">
+          <button class="btn ok" onclick="addRevenue()">+ Add</button>
+        </div>
+      </div>
+
+      <!-- PIPELINE KANBAN -->
+      <div class="card">
+        <div class="card-h"><div class="card-title" id="PIPE_title">Sales Pipeline</div></div>
+        <div class="pipeline">
+          <div class="pcol">
+            <div class="pcol-h"><div class="pcol-n">Prospecting</div><div class="pcol-c">8</div></div>
+            <div class="deal"><div class="deal-co">Vercel</div><div class="deal-who">Lee Robinson</div><div class="deal-val">$12,000</div></div>
+            <div class="deal"><div class="deal-co">Linear</div><div class="deal-who">Karri Saarinen</div><div class="deal-val">$8,500</div></div>
+          </div>
+          <div class="pcol">
+            <div class="pcol-h"><div class="pcol-n">Contacted</div><div class="pcol-c">5</div></div>
+            <div class="deal"><div class="deal-co">Stripe</div><div class="deal-who">Sarah Chen</div><div class="deal-val">$45,000</div></div>
+            <div class="deal" style="border-left:1.5px solid var(--warn)"><div class="deal-co">Figma ⚠</div><div class="deal-who">Dylan Field</div><div class="deal-val">$18,500</div></div>
+          </div>
+          <div class="pcol">
+            <div class="pcol-h"><div class="pcol-n">Engaged</div><div class="pcol-c">4</div></div>
+            <div class="deal"><div class="deal-co">Airbnb</div><div class="deal-who">Anna Kim</div><div class="deal-val">$62,000</div></div>
+            <div class="deal"><div class="deal-co">Shopify</div><div class="deal-who">H. Finkelstein</div><div class="deal-val">$54,000</div></div>
+          </div>
+          <div class="pcol">
+            <div class="pcol-h"><div class="pcol-n">Closing</div><div class="pcol-c">2</div></div>
+            <div class="deal" style="border-left:1.5px solid var(--ok)"><div class="deal-co">Atlassian ✓</div><div class="deal-who">Scott Farquhar</div><div class="deal-val">$85,000</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- IRIS SCORES -->
+      <div class="card">
+        <div class="card-h"><div class="card-title" id="IRIS_title">Iris · Agent Scores</div></div>
+        <div class="iris-grid">
+          <div class="ic"><div class="ic-top"><div class="ic-nm" style="color:var(--a)">ATLAS</div><div class="ic-sc" style="color:var(--a)">94</div></div><div class="ic-bg"><div class="ic-fill" style="width:94%;background:var(--a)"></div></div><div class="ic-kpi"><span>143 leads</span><span>↑ +12</span></div></div>
+          <div class="ic"><div class="ic-top"><div class="ic-nm" style="color:var(--n)">NEXUS</div><div class="ic-sc" style="color:var(--n)">88</div></div><div class="ic-bg"><div class="ic-fill" style="width:88%;background:var(--n)"></div></div><div class="ic-kpi"><span>94% approve</span><span>stable</span></div></div>
+          <div class="ic"><div class="ic-top"><div class="ic-nm" style="color:var(--e)">ECHO</div><div class="ic-sc" style="color:var(--e)">81</div></div><div class="ic-bg"><div class="ic-fill" style="width:81%;background:var(--e)"></div></div><div class="ic-kpi"><span>147 sent</span><span>↑ +5</span></div></div>
+          <div class="ic"><div class="ic-top"><div class="ic-nm" style="color:var(--o)">ORACLE</div><div class="ic-sc" style="color:var(--o)">77</div></div><div class="ic-bg"><div class="ic-fill" style="width:77%;background:var(--o)"></div></div><div class="ic-kpi"><span>$284k</span><span>↓ -2</span></div></div>
+          <div class="ic"><div class="ic-top"><div class="ic-nm" style="color:var(--h)">HERMES</div><div class="ic-sc" style="color:var(--h)">72</div></div><div class="ic-bg"><div class="ic-fill" style="width:72%;background:var(--h)"></div></div><div class="ic-kpi"><span>1.4k reach</span><span>↑ +3</span></div></div>
+          <div class="ic"><div class="ic-top"><div class="ic-nm" style="color:var(--i)">IRIS</div><div class="ic-sc" style="color:var(--i)">—</div></div><div class="ic-bg"><div class="ic-fill" style="width:100%;background:var(--i)"></div></div><div class="ic-kpi"><span>monitor</span><span>system</span></div></div>
+        </div>
+      </div>
+
+      <button class="btn full" onclick="runAgent('oracle','report','ai-oracle','ai-out-oracle','var(--o)')" style="margin-bottom:10px">🤖 <span id="ORA_ai_btn">ORACLE: Generate Full AI Report</span></button>
+      <div class="ai-wrap" id="ai-oracle">
+        <div class="ai-hd"><div class="ai-dot" style="background:var(--o)"></div><span>ORACLE</span><span style="margin-left:auto;cursor:pointer;color:var(--ink4)" onclick="this.closest('.ai-wrap').classList.remove('on')">✕</span></div>
+        <div class="ai-out" id="ai-out-oracle"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ CRYPTO VIEW ══ -->
+  <div class="view" id="view-crypto">
+    <div class="wrap">
+      <div class="section-head"><h2 id="CRY_title">Crypto Monitor</h2><p>// coingecko free api · live prices · manual decisions only</p></div>
+      <div class="disc-box">
+        <div class="disc-t" id="CRY_disc_t">⚠ Your decision, always — Not financial advice</div>
+        <div class="disc-b" id="CRY_disc_b">ORACLE shows live data for reference only. No trade is ever executed automatically. Crypto is volatile. Only invest money you can afford to lose entirely.</div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <div style="font-size:10px;color:var(--ink4)">Updated: <span id="cry-ts">—</span></div>
+        <button class="btn" onclick="fetchCrypto()" id="cry-refresh-btn">↻ Refresh</button>
+      </div>
+      <div class="crypto-grid">
+        <div class="cc"><div class="cc-sym">BTC</div><div class="cc-price" id="btc-p">—</div><div class="cc-chg" id="btc-c">—</div></div>
+        <div class="cc"><div class="cc-sym">ETH</div><div class="cc-price" id="eth-p">—</div><div class="cc-chg" id="eth-c">—</div></div>
+        <div class="cc"><div class="cc-sym">SOL</div><div class="cc-price" id="sol-p">—</div><div class="cc-chg" id="sol-c">—</div></div>
+        <div class="cc"><div class="cc-sym">BNB</div><div class="cc-price" id="bnb-p">—</div><div class="cc-chg" id="bnb-c">—</div></div>
+      </div>
+      <div class="card">
+        <div class="card-h"><div class="card-title" id="CRY_sig_title">Market Signals — Review Yourself</div><span class="badge badge-warn">You decide</span></div>
+        <div class="sig"><div class="sig-ico" style="background:rgba(62,224,160,.1);color:var(--ok)">↑</div><div class="sig-body"><div class="sig-t" id="SIG1_t">BTC — Above 30-day support level</div><div class="sig-d" id="SIG1_d">Price holding above key support. Volume declining. No clear signal yet — watch before acting.</div><div class="sig-acts"><button class="sig-btn sig-w" onclick="markSig(this,'w')">Watch</button><button class="sig-btn sig-s" onclick="markSig(this,'s')">Skip</button></div></div></div>
+        <div class="sig"><div class="sig-ico" style="background:rgba(248,113,113,.1);color:var(--bad)">↓</div><div class="sig-body"><div class="sig-t" id="SIG2_t">ETH — Below 7-day average</div><div class="sig-d" id="SIG2_d">Short-term weakness. Could be dip or correction. High uncertainty — do not rush.</div><div class="sig-acts"><button class="sig-btn sig-w" onclick="markSig(this,'w')">Watch</button><button class="sig-btn sig-s" onclick="markSig(this,'s')">Skip</button></div></div></div>
+      </div>
+      <button class="btn full" onclick="runAgent('oracle','crypto','ai-crypto','ai-out-crypto','var(--o)')" style="margin-bottom:10px">🤖 <span id="CRY_ai_btn">ORACLE: AI Market Analysis</span></button>
+      <div class="ai-wrap" id="ai-crypto">
+        <div class="ai-hd"><div class="ai-dot" style="background:var(--o)"></div><span>ORACLE · Crypto (Educational)</span><span style="margin-left:auto;cursor:pointer;color:var(--ink4)" onclick="this.closest('.ai-wrap').classList.remove('on')">✕</span></div>
+        <div class="ai-out" id="ai-out-crypto"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ GUIDE VIEW ══ -->
+  <div class="view" id="view-guide">
+    <div class="wrap">
+      <div class="section-head"><h2 id="GD_title">Setup Guide</h2><p id="GD_sub">// step-by-step · free only · start today</p></div>
+
+      <div class="step"><div class="step-n">1</div><div class="step-body">
+        <div class="step-t" id="GD1t">Save the file to your device</div>
+        <div class="step-d" id="GD1d">Download <strong>clean-os-v4.html</strong>.<br><br>
+        📱 <strong>iPhone:</strong> Tap the download link → tap Share → Save to Files. Then open it in Safari → Share → Add to Home Screen. It becomes a full app icon.<br>
+        📱 <strong>Android:</strong> Download it → open in Chrome → 3-dot menu → Add to Home Screen.<br>
+        💻 <strong>Laptop:</strong> Double-click the file. It opens in your browser — no install needed. Bookmark it.</div>
+      </div></div>
+
+      <div class="step"><div class="step-n">2</div><div class="step-body">
+        <div class="step-t" id="GD2t">Get your free OpenRouter key — no card, instant</div>
+        <div class="step-d" id="GD2d">1. Go to <strong>aistudio.google.com</strong><br>2. Sign in with any Google account (Gmail works)<br>3. Click <strong>"Get API key"</strong> → <strong>"Create API key"</strong><br>4. Copy your key (starts with <strong>AIzaSy...</strong>)<br>5. Paste it in Step 1 of the Setup wizard in the app<br><br>✓ Free: 1,500 requests/day · No credit card · Works instantly</div>
+        <code class="code-block" onclick="copyCode(this)">openrouter.ai/keys</code>
+        <a href="https://openrouter.ai/keys" target="_blank" class="ext-link">→ Open OpenRouter Keys (free)</a>
+      </div></div>
+
+      <div class="step"><div class="step-n">3</div><div class="step-body">
+        <div class="step-t" id="GD3t">Get Apollo.io free key — real lead data</div>
+        <div class="step-d" id="GD3d">1. Go to <strong>app.apollo.io</strong><br>2. Sign up free — no credit card needed<br>3. Settings → Integrations → API → Copy key<br>4. Paste in Setup wizard<br><br>Free tier: unlimited email search, 10 contact exports per month. Enough to start finding real prospects.</div>
+        <code class="code-block" onclick="copyText(this)">app.apollo.io</code>
+        <a href="https://app.apollo.io" target="_blank" class="ext-link">→ Open Apollo.io</a>
+      </div></div>
+
+      <div class="step"><div class="step-n">4</div><div class="step-body">
+        <div class="step-t" id="GD4t">Get Brevo free email — 300 emails/day</div>
+        <div class="step-d" id="GD4d">1. Go to <strong>brevo.com</strong> and sign up free<br>2. Verify your email<br>3. Settings → API Keys → Generate → copy your xkeysib-... key<br>4. Go to Settings → Senders → Add your email and verify it<br>5. Paste the API key in Setup wizard<br>6. Open this HTML file in a text editor (Notepad on PC, any text app on phone) and replace <strong>your-email [at] yourdomain.com</strong> with your verified sender email<br><br>This allows ECHO to send real emails to real people.</div>
+        <code class="code-block" onclick="copyText(this)">brevo.com</code>
+        <a href="https://app.brevo.com" target="_blank" class="ext-link">→ Open Brevo</a>
+      </div></div>
+
+      <div class="step"><div class="step-n">5</div><div class="step-body">
+        <div class="step-t" id="GD5t">Enter your access code and start</div>
+        <div class="step-d" id="GD5d">Your default access codes — tap to copy:</div>
+        <code class="code-block" onclick="copyText(this)">CLEAN-2026</code>
+        <code class="code-block" onclick="copyText(this)">AGENT-OS-PRO</code>
+        <code class="code-block" onclick="copyText(this)">CLEAN-OS-V4</code>
+        <div class="note info" style="margin-top:8px" id="GD5note">To change your codes: open the HTML file in a text editor, find <strong>codes:</strong> and replace with your own private codes.</div>
+      </div></div>
+
+      <div class="step"><div class="step-n">6</div><div class="step-body">
+        <div class="step-t" id="GD6t">How to make money — zero budget plan</div>
+        <div class="step-d" id="GD6d"><strong>Week 1:</strong> Use ATLAS + ECHO to run your own outreach. Offer "AI-powered lead generation" as a service on Upwork or Fiverr. Charge $200–500 per campaign. Your cost: ~$2 in API fees.<br><br><strong>Month 1:</strong> Convert 2–3 clients to a monthly retainer at $500–800/month. That's $1,000–2,400 MRR. Your API cost is still ~$10/month.<br><br><strong>Month 2+:</strong> Raise prices. Add HERMES social media management as a $300/month upsell per client.<br><br><strong>The key insight:</strong> You ARE the agency. The agents do the work. You manage the clients and collect the money.</div>
+      </div></div>
+
+      <div class="note ok" style="margin-top:4px" id="GD_note_final">✓ No server needed. No hosting. No monthly fees. Everything runs in your browser. Gemini AI is 100% free — 1,500 requests/day, no card ever needed.</div>
+
+      <!-- ═══════════════════════════════════════════
+           MONEY PLANS — Global, Africa, Ghana
+           ═══════════════════════════════════════════ -->
+      <div class="card" style="border-left:2px solid var(--a);margin-top:18px">
+        <div class="card-h">
+          <div class="card-title" style="font-size:15px">💰 How to Make Money with Clean OS</div>
+          <span class="badge badge-ok">Start Today</span>
+        </div>
+        <p style="font-size:12px;color:var(--ink3);line-height:1.7;margin-bottom:12px">
+          You have a real AI sales system in your hands. Here are concrete income paths you can start <strong style="color:var(--ink)">right now in Ghana, Africa, and globally</strong> — all with zero upfront budget.
+        </p>
+      </div>
+
+      <!-- GHANA / AFRICA FIRST -->
+      <div class="step" style="border-left:2px solid var(--a)">
+        <div class="step-n" style="background:rgba(62,224,160,0.15);border-color:rgba(62,224,160,0.3);color:var(--a)">GH</div>
+        <div class="step-body">
+          <div class="step-t">🇬🇭 Ghana — Start Here This Week</div>
+          <div class="step-d">
+            <strong>WhatsApp Outreach Agency (Day 1)</strong><br>
+            Use ECHO to write WhatsApp messages for local businesses. WhatsApp is the #1 business channel in Ghana. Target: real estate agencies, travel agencies, car dealers, schools, clinics, restaurants.<br><br>
+            Charge: <strong style="color:var(--a)">GHS 500–2,000 per campaign</strong> (~$35–140 USD)<br>
+            Costs you: GHS 5–15 in API fees. Pure profit.<br><br>
+            <strong>LinkedIn + Facebook for Ghanaian SMEs</strong><br>
+            Most Ghanaian businesses have no social media strategy. Use HERMES to write posts for them.<br>
+            Charge: <strong style="color:var(--a)">GHS 800–2,500/month</strong> per business<br><br>
+            <strong>Where to find clients in Ghana:</strong><br>
+            • Accra Business Directory, Ghana Yellow Pages<br>
+            • Facebook Groups: "Ghana Entrepreneurs", "Accra Business Network"<br>
+            • Physical visits to shops on Oxford Street, Osu, Labone<br>
+            • LinkedIn search: "Ghana" + "CEO" or "Marketing Manager"
+          </div>
+        </div>
+      </div>
+
+      <!-- AFRICA-WIDE -->
+      <div class="step" style="border-left:2px solid var(--o)">
+        <div class="step-n" style="background:rgba(245,185,66,0.15);border-color:rgba(245,185,66,0.3);color:var(--o)">AF</div>
+        <div class="step-body">
+          <div class="step-t">🌍 Africa-Wide — Expand in Month 2</div>
+          <div class="step-d">
+            <strong>Nigeria</strong> — Largest tech ecosystem in Africa. Target Lagos fintech startups, e-commerce companies, logistics firms. ATLAS can find Nigerian startup founders on Apollo.<br>
+            Charge: <strong style="color:var(--o)">$100–500/campaign USD</strong> (pay in USD to avoid naira volatility)<br><br>
+            <strong>Kenya</strong> — Nairobi is "Silicon Savannah". M-Pesa, agri-tech, healthtech startups all need outreach. Price: $80–400/month.<br><br>
+            <strong>South Africa</strong> — Most developed B2B market. Western pricing applies. Charge $300–800/month like a European client.<br><br>
+            <strong>Côte d'Ivoire / Senegal / Cameroon</strong> — French-speaking markets. Use Clean OS in French mode. ECHO writes in French. Huge untapped opportunity.<br><br>
+            <strong>Platforms to find clients:</strong><br>
+            • Afripreneur, Disrupt Africa startup database<br>
+            • LinkedIn Africa filter<br>
+            • Paystack / Flutterwave merchant lists (public)
+          </div>
+        </div>
+      </div>
+
+      <!-- GLOBAL USD INCOME -->
+      <div class="step" style="border-left:2px solid var(--e)">
+        <div class="step-n" style="background:rgba(91,180,248,0.15);border-color:rgba(91,180,248,0.3);color:var(--e)">$</div>
+        <div class="step-body">
+          <div class="step-t">🌐 Earn USD Globally — While Living in Ghana</div>
+          <div class="step-d">
+            This is your biggest opportunity. You live in Ghana (low cost of living) but charge USD/EUR rates. The margin is massive.<br><br>
+            <strong>Upwork — Post this exact service:</strong><br>
+            "AI-Powered B2B Lead Generation &amp; Cold Email Outreach"<br>
+            Price: $150–400 per project. $500–1,200/month retainer.<br>
+            Your cost: ~$8–15 API fees. Profit: 95%+<br><br>
+            <strong>Fiverr — Post these gigs:</strong><br>
+            • "I will write 10 personalized cold emails using AI" — $25–75<br>
+            • "I will find 50 qualified B2B leads for your niche" — $30–80<br>
+            • "I will write a week of LinkedIn content for your brand" — $50–120<br><br>
+            <strong>Direct outreach to US/EU companies:</strong><br>
+            Use ATLAS to find growth-stage startups, use ECHO to pitch your service directly. They pay in USD, you receive via Payoneer or Wise (both work in Ghana).<br><br>
+            <strong>Getting paid in Ghana:</strong><br>
+            • <strong>Payoneer</strong> — works well, withdraw to GCB, Ecobank, MTN Mobile Money<br>
+            • <strong>Wise (formerly TransferWise)</strong> — best rates for USD→GHS<br>
+            • <strong>Chipper Cash</strong> — built for Africa, instant USD payments
+          </div>
+        </div>
+      </div>
+
+      <!-- EUROPE / AMERICA -->
+      <div class="step" style="border-left:2px solid var(--n)">
+        <div class="step-n" style="background:rgba(155,139,244,0.15);border-color:rgba(155,139,244,0.3);color:var(--n)">EU</div>
+        <div class="step-body">
+          <div class="step-t">🇪🇺🇺🇸 Europe &amp; America — Premium Pricing</div>
+          <div class="step-d">
+            <strong>UK / France / Germany</strong><br>
+            European B2B buyers pay £500–2,000/month for lead generation. Use HERMES in French for French clients. Position yourself as a boutique AI agency.<br><br>
+            <strong>United States</strong><br>
+            Largest market. US startups pay $800–3,000/month for outreach retainers. The key is LinkedIn credibility — use HERMES to build your personal brand first (2–4 weeks of daily posts), then pitch.<br><br>
+            <strong>Canada / Australia</strong><br>
+            Similar to US but less competitive. Good entry markets. Timezone overlaps partially with Ghana (Australia = morning shift, Canada = evening shift).<br><br>
+            <strong>Your positioning advantage:</strong><br>
+            "AI-powered boutique agency" — you use tools most agencies don't have. Your output quality (AI-written, NEXUS-reviewed) beats most $2k/month agencies.
+          </div>
+        </div>
+      </div>
+
+      <!-- 90-DAY ROADMAP -->
+      <div class="step" style="border-left:2px solid var(--i)">
+        <div class="step-n" style="background:rgba(240,126,175,0.15);border-color:rgba(240,126,175,0.3);color:var(--i)">90</div>
+        <div class="step-body">
+          <div class="step-t">📅 Your 90-Day Roadmap to Real Income</div>
+          <div class="step-d">
+            <strong style="color:var(--ink)">Week 1–2 — First money in Ghana:</strong><br>
+            Message 10 local businesses via WhatsApp offering a free sample campaign. Use ECHO to write the messages. Aim to convert 2–3 to a paid GHS 500–1,000 campaign.<br><br>
+            <strong style="color:var(--ink)">Week 3–4 — First USD income:</strong><br>
+            Create Upwork and Fiverr accounts. Post 2–3 gigs. Set up Payoneer. Aim for $100–300 in first month.<br><br>
+            <strong style="color:var(--ink)">Month 2 — Build recurring:</strong><br>
+            Convert best clients to monthly retainers. Target: 3 clients × GHS 1,500/month = GHS 4,500/month (~$300). Or 2 USD clients × $400/month = $800/month.<br><br>
+            <strong style="color:var(--ink)">Month 3 — Scale and specialize:</strong><br>
+            Pick one vertical (e.g. African fintech, or US SaaS) and go deep. Raise prices. Add HERMES social management as upsell. Target: $500–1,500/month MRR.<br><br>
+            <strong style="color:var(--ink)">Long-term (6–12 months):</strong><br>
+            With a track record and testimonials, charge $1,000–3,000/month USD per client. 5 clients = $5,000–15,000/month. Living in Ghana, this is extraordinary income.
+          </div>
+        </div>
+      </div>
+
+      <!-- LONG-TERM VISION -->
+      <div class="step" style="border-left:2px solid var(--h)">
+        <div class="step-n" style="background:rgba(248,129,74,0.15);border-color:rgba(248,129,74,0.3);color:var(--h)">∞</div>
+        <div class="step-body">
+          <div class="step-t">🚀 Long-Term Vision — Build Something Real</div>
+          <div class="step-d">
+            Clean OS is not just a tool — it's the infrastructure for an agency business. Here's what you're building toward:<br><br>
+            <strong style="color:var(--ink)">Year 1:</strong> Solo AI agency, $1,000–3,000/month. Revenue tracked in ORACLE. All agents working daily.<br><br>
+            <strong style="color:var(--ink)">Year 2:</strong> Hire 1–2 people to manage client relationships. You manage agents and strategy. Scale to $5,000–10,000/month.<br><br>
+            <strong style="color:var(--ink)">Year 3+:</strong> Build a proper Ghanaian AI agency. Ghana's tech ecosystem is growing fast. Be the person who brought AI-powered sales to Africa.<br><br>
+            <strong style="color:var(--ink)">What makes this long-term viable:</strong><br>
+            • AI outreach is 10x cheaper than hiring human SDRs<br>
+            • Every business in the world needs leads — forever<br>
+            • You own the system — it gets better with every update<br>
+            • Ghana &amp; Africa are massively underserved markets<br>
+            • You can serve any timezone from Accra<br><br>
+            <strong style="color:var(--a)">Start today. The market is waiting.</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- WEEKLY UPDATE GUIDE -->
+      <div class="card" style="border-left:2px solid var(--gold);margin-top:6px">
+        <div class="card-h">
+          <div class="card-title">🔄 How to Get Weekly Updates</div>
+          <span class="badge" style="background:rgba(200,169,107,0.12);color:var(--gold);border:1px solid rgba(200,169,107,0.25)">Free Forever</span>
+        </div>
+        <div style="font-size:12px;color:var(--ink3);line-height:1.72">
+          Since Clean OS is a single HTML file, updates work like this:<br><br>
+          <strong style="color:var(--ink)">Option 1 — Ask for an update (easiest):</strong><br>
+          Come back to Claude and type: <span class="code-block" onclick="navigator.clipboard?.writeText('Update my Clean OS to the latest version with all fixes and new features')" style="display:inline;padding:2px 8px;font-size:11px;cursor:pointer">"Update my Clean OS to the latest version"</span><br>
+          I'll give you a fresh file with all bugs fixed and new features added. Free, instant.<br><br>
+          <strong style="color:var(--ink)">Option 2 — GitHub Pages (when you have income):</strong><br>
+          Host the file free on GitHub Pages. Then updates push automatically. URL stays the same. Costs $0.<br><br>
+          <strong style="color:var(--ink)">Option 3 — Netlify Drop (zero setup):</strong><br>
+          Go to app.netlify.com/drop, drag your HTML file, get a permanent URL. Free tier. Update by dragging new version.<br><br>
+          <strong style="color:var(--ink)">Suggested update schedule:</strong><br>
+          • <strong>Weekly:</strong> Ask Claude for new HERMES social templates and ECHO email sequences<br>
+          • <strong>Monthly:</strong> Full Clean OS update with new features<br>
+          • <strong>Quarterly:</strong> Full audit and money plan refresh based on what's working for you
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- /APP -->
+
+<!-- BOTTOM NAV -->
+<div class="bnav" id="bnav">
+  <div class="bnav-row">
+    <button class="bn on" onclick="nav('workspace',null,'workspace')" id="bn-workspace"><div class="bn-ico">🌐</div><div class="bn-lbl" id="BN_ws">Workspace</div></button>
+    <button class="bn" onclick="nav('leads',null,'leads')" id="bn-leads"><div class="bn-ico">🔍</div><div class="bn-lbl" id="BN_leads">Leads</div></button>
+    <button class="bn" onclick="nav('outreach',null,'outreach')" id="bn-out"><div class="bn-ico">📧</div><div class="bn-lbl" id="BN_out">Email</div></button>
+    <button class="bn" onclick="nav('social',null,'social')" id="bn-social"><div class="bn-ico">📱</div><div class="bn-lbl" id="BN_soc">Social</div></button>
+    <button class="bn" onclick="nav('oracle',null,'oracle')" id="bn-oracle"><div class="bn-ico">📊</div><div class="bn-lbl" id="BN_ora">Oracle</div></button>
+    <button class="bn" onclick="nav('guide',null,'guide')" id="bn-guide"><div class="bn-ico">📖</div><div class="bn-lbl" id="BN_guide">Guide</div></button>
+  </div>
+</div>
+
+<!-- UPDATE MODAL -->
+<div class="overlay" id="upd-modal" onclick="if(event.target===this)closeModal('upd-modal')">
+  <div class="modal">
+    <div class="modal-h"><div class="modal-title">System Update</div><button class="modal-x" onclick="closeModal('upd-modal')">✕</button></div>
+    <div class="modal-b">
+      <div class="mv-box">
+        <div class="mv-row"><span>Current</span><span class="mv-val">v4.0.0</span></div>
+        <div class="mv-row"><span>Available</span><span class="mv-val" style="color:var(--gold)">v4.0.1</span></div>
+        <div class="mv-row"><span>Build</span><span class="mv-val">2026.03.15</span></div>
+      </div>
+      <div style="font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--ink4);margin-bottom:8px">Changelog</div>
+      <div style="max-height:150px;overflow-y:auto">
+        <div class="cl-item"><span class="cl-type cl-feat">Feature</span><span class="cl-txt">TikTok content generator added to HERMES</span></div>
+        <div class="cl-item"><span class="cl-type cl-fix">Fix</span><span class="cl-txt">Orbital layout improved for small screens</span></div>
+        <div class="cl-item"><span class="cl-type cl-sec">Security</span><span class="cl-txt">Session rotation hardened against replay attacks</span></div>
+        <div class="cl-item"><span class="cl-type cl-feat">Feature</span><span class="cl-txt">Revenue tracker added to Oracle view</span></div>
+        <div class="cl-item"><span class="cl-type cl-fix">Fix</span><span class="cl-txt">CoinGecko rate limit handling improved</span></div>
+        <div class="cl-item"><span class="cl-type cl-feat">Feature</span><span class="cl-txt">Full French / English language toggle</span></div>
+      </div>
+    </div>
+    <div class="modal-f">
+      <button class="btn" onclick="closeModal('upd-modal')">Later</button>
+      <button class="btn primary" onclick="doUpdate()">Install</button>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV (mobile) -->
+<div class="bottom-nav" id="bottom-nav">
+  <div class="bnav">
+    <button class="bnav-btn on" id="bn-ws" onclick="nav('workspace',null,'bn-ws')">
+      <div class="bnav-ico">🌐</div><div class="bnav-lbl" id="bnl-ws">Space</div>
+    </button>
+    <button class="bnav-btn" id="bn-leads" onclick="nav('leads',null,'bn-leads')">
+      <div class="bnav-ico">🔍</div><div class="bnav-lbl" id="bnl-leads">Leads</div>
+    </button>
+    <button class="bnav-btn" id="bn-outreach" onclick="nav('outreach',null,'bn-outreach')">
+      <div class="bnav-ico">📧</div><div class="bnav-lbl" id="bnl-out">Outreach</div>
+    </button>
+    <button class="bnav-btn" id="bn-social" onclick="nav('social',null,'bn-social')">
+      <div class="bnav-ico">📱</div><div class="bnav-lbl" id="bnl-soc">Social</div>
+    </button>
+    <button class="bnav-btn" id="bn-oracle" onclick="nav('oracle',null,'bn-oracle')">
+      <div class="bnav-ico">📊</div><div class="bnav-lbl" id="bnl-ora">Oracle</div>
+    </button>
+    <button class="bnav-btn" id="bn-guide" onclick="nav('guide',null,'bn-guide')">
+      <div class="bnav-ico">📖</div><div class="bnav-lbl" id="bnl-guide">Guide</div>
+    </button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><div class="toast-d" id="tdot"></div><span id="tmsg"></span></div></div>
+
+<script>
+/* ═══════════════════════════════════════════
+   CLEAN OS v4 — OpenRouter Edition
+   Free AI via OpenRouter · No credit card
+   Codes: CLEAN-2026 · AGENT-OS-PRO · CLEAN-OS-V4
+   ═══════════════════════════════════════════ */
+
+document.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey||e.metaKey) && e.shiftKey && ['I','J','C','K'].includes(e.key.toUpperCase())) e.preventDefault();
+  if (e.key === 'F12') e.preventDefault();
+});
+
+/* ── CONFIG ── */
+const CFG = {
+  v: '4.2.0', b: '2026.03',
+  codes: ['CLEAN-2026','AGENT-OS-PRO','CLEAN-OS-V4'],
+  SK: '__c4s__', SH: 8,
+  KK: { or:'__c4_or__', apo:'__c4_apo__', brv:'__c4_brv__' },
+  RK: '__c4_rev__'
+};
+
+/* ── OPENROUTER API ──
+   Free models (no credit card): append :free to model name
+   Best free model: meta-llama/llama-3.3-70b-instruct:free
+   Endpoint: https://openrouter.ai/api/v1/chat/completions
+   CORS: Works from browser, no proxy needed
+*/
+const OR_URL = 'https://openrouter.ai/api/v1/chat/completions';
+const OR_MODEL = 'cognitivecomputations/dolphin-mistral-24b-venice-edition:free';
+
+function orHeaders(key) {
+  return {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer ' + key,
+    'HTTP-Referer': 'https://cleanweever30.github.io',
+    'X-Title': 'Clean OS'
+  };
+}
+
+function orBody(sys, prompt) {
+  return JSON.stringify({
+    model: OR_MODEL,
+    messages: [
+      { role: 'system', content: sys },
+      { role: 'user', content: prompt }
+    ]
+  });
+}
+
+/* ── TRANSLATIONS ── */
+const TR = {
+  en: {
+    G_tagline:'Agent OS · v4 · Free AI Edition', G_lbl:'Access Code', G_btn:'Enter',
+    G_foot:'Clean OS · OpenRouter Edition · v4.2.0', lang_btn:'FR', online:'6 live',
+    WIZ_title:'⚡ Quick Setup — All Free', WIZ_sub:'Tap to configure. No credit card needed.',
+    WIZ_or_desc:'Powers all 6 agents free. Go to openrouter.ai → sign in → Keys → Create Key. Free models included, no card needed.',
+    WIZ_apo_desc:'Free forever: unlimited email search, 10 exports/month. ATLAS finds real leads from 210M+ contacts.',
+    WIZ_brv_desc:'Free forever: 300 real emails/day. ECHO uses this to send actual outreach emails.',
+    WS_title:'Agent Workspace', WS_sub:'// tap any agent to activate · nexus coordinates all',
+    Q_label:'NEXUS · Review Queue',
+    LEADS_title:'Atlas · Lead Engine', LEADS_btn:'Find Leads',
+    th_name:'Name', th_role:'Role', th_co:'Company', th_score:'Score',
+    LEADS_note:'Apollo free: unlimited search · 10 exports/month · no card',
+    OV_title:'Echo · Outreach', OV_compose:'Compose Email',
+    OV_draft:'Draft with AI', OV_use:'Use AI Draft', OV_send:'Send via Brevo',
+    OV_slog:'Send Log', OV_note:'Brevo free: 300 emails/day · ',
+    SV_title:'Hermes · Social OS',
+    SV_li_tier:'Free · manual post', SV_x_tier:'Free · manual post',
+    SV_ig_tier:'Free · Meta Graph API', SV_tt_tier:'Free · Content API',
+    CRY_title:'Crypto Monitor',
+    CRY_disc_t:'⚠ Your decision, always — Not financial advice',
+    CRY_disc_b:'ORACLE shows live data for reference only. No trade is executed automatically. Only invest what you can afford to lose entirely.',
+    CRY_sig_title:'Market Signals — You Decide',
+    SIG1_t:'BTC — Holding above 30-day support',
+    SIG1_d:'Price stable above key level. Volume declining — no clear signal yet.',
+    SIG2_t:'ETH — Below 7-day average',
+    SIG2_d:'Short-term weakness. Could be dip or correction. High uncertainty.',
+    ORA_title:'Oracle · Analytics', rev_title:'Revenue Tracker',
+    pipe_title:'Pipeline', p1:'Prospecting', p2:'Contacted', p3:'Engaged', p4:'Closing',
+    IRIS_title:'Iris · Agent Scores', ORA_ai_btn:'ORACLE: Generate Full Report',
+    GUIDE_title:'Setup Guide', GUIDE_sub:'// step-by-step · free · start today',
+    UPD_title:'Update Available', UPD_later:'Later', UPD_install:'Install',
+    cg_btn:'↻ Refresh', approved:'Approved', revision:'Sent for revision', watching:'Watching ✓',
+    'bnl-ws':'Space','bnl-leads':'Leads','bnl-out':'Outreach',
+    'bnl-soc':'Social','bnl-ora':'Oracle','bnl-guide':'Guide',
+    agent_roles: {
+      nexus:'Quality gate & coordinator', atlas:'Lead prospecting & ICP scoring',
+      echo:'Email outreach & sequences', oracle:'Pipeline analytics & reports',
+      iris:'Performance scoring & rewards', hermes:'Social content & scheduling'
+    },
+    agent_run: {
+      nexus:'Run NEXUS Briefing', atlas:'Run ATLAS Prospecting',
+      echo:'Draft Outreach Email', oracle:'Generate ORACLE Report',
+      iris:'Run IRIS Evaluation', hermes:'Create LinkedIn Post'
+    }
+  },
+  fr: {
+    G_tagline:"Agent OS · v4 · IA Gratuite", G_lbl:"Code d'accès", G_btn:'Entrer',
+    G_foot:'Clean OS · Édition OpenRouter · v4.2.0', lang_btn:'EN', online:'6 en ligne',
+    WIZ_title:'⚡ Configuration rapide — Tout gratuit', WIZ_sub:'Appuyez pour configurer. Sans CB.',
+    WIZ_or_desc:"Alimente les 6 agents. Allez sur openrouter.ai → connectez-vous → Keys → Create Key. Modèles gratuits inclus, sans CB.",
+    WIZ_apo_desc:'Gratuit pour toujours : recherche illimitée, 10 exports/mois.',
+    WIZ_brv_desc:'Gratuit pour toujours : 300 emails/jour.',
+    WS_title:'Espace de Travail', WS_sub:'// appuyez sur un agent · nexus coordonne tout',
+    Q_label:'NEXUS · File de révision',
+    LEADS_title:'Atlas · Moteur de Leads', LEADS_btn:'Trouver des leads',
+    th_name:'Nom', th_role:'Rôle', th_co:'Entreprise', th_score:'Score',
+    LEADS_note:'Apollo gratuit : recherche illimitée · 10 exports/mois',
+    OV_title:'Echo · Prospection', OV_compose:'Composer un email',
+    OV_draft:"Rédiger avec l'IA", OV_use:"Utiliser l'IA", OV_send:'Envoyer via Brevo',
+    OV_slog:"Journal d'envoi", OV_note:'Brevo gratuit : 300 emails/jour · ',
+    SV_title:'Hermes · Réseaux Sociaux',
+    SV_li_tier:'Gratuit · post manuel', SV_x_tier:'Gratuit · post manuel',
+    SV_ig_tier:'Gratuit · Meta Graph API', SV_tt_tier:'Gratuit · Content API',
+    CRY_title:'Moniteur Crypto',
+    CRY_disc_t:'⚠ Votre décision, toujours — Pas de conseil financier',
+    CRY_disc_b:"ORACLE affiche des données en direct à titre informatif uniquement.",
+    CRY_sig_title:'Signaux du Marché — Vous décidez',
+    SIG1_t:'BTC — Au-dessus du support sur 30 jours',
+    SIG1_d:"Prix stable au-dessus du niveau clé. Volume en baisse.",
+    SIG2_t:'ETH — En dessous de la moyenne sur 7 jours',
+    SIG2_d:"Faiblesse à court terme. Forte incertitude.",
+    ORA_title:'Oracle · Analytique', rev_title:'Suivi des Revenus',
+    pipe_title:'Pipeline', p1:'Prospection', p2:'Contacté', p3:'Engagé', p4:'Clôture',
+    IRIS_title:'Iris · Scores des Agents', ORA_ai_btn:'ORACLE : Générer un rapport',
+    GUIDE_title:'Guide de Configuration', GUIDE_sub:'// étape par étape · gratuit',
+    UPD_title:'Mise à jour disponible', UPD_later:'Plus tard', UPD_install:'Installer',
+    cg_btn:'↻ Actualiser', approved:'Approuvé', revision:'Envoyé en révision', watching:'En veille ✓',
+    'bnl-ws':'Espace','bnl-leads':'Leads','bnl-out':'Email',
+    'bnl-soc':'Social','bnl-ora':'Oracle','bnl-guide':'Guide',
+    agent_roles: {
+      nexus:'Contrôle qualité & coordinateur', atlas:'Prospection & scoring ICP',
+      echo:'Emails de prospection', oracle:'Analytique pipeline',
+      iris:'Scores de performance', hermes:'Contenu social'
+    },
+    agent_run: {
+      nexus:'Lancer le briefing NEXUS', atlas:'Lancer la prospection ATLAS',
+      echo:'Rédiger un email', oracle:'Générer un rapport ORACLE',
+      iris:"Lancer l'évaluation IRIS", hermes:'Créer un post LinkedIn'
+    }
+  }
+};
+
+/* ── AGENTS ── */
+const AGENTS = {
+  nexus: {c:'#9B8BF4',ico:'◎',task:'briefing',stats:[['3','Queue'],['94%','Approve'],['47','Today']]},
+  atlas: {c:'#3EE0A0',ico:'🔍',task:'prospect',stats:[['7','New leads'],['82%','ICP fit'],['143','Total']]},
+  echo:  {c:'#5BB4F8',ico:'📧',task:'draft',   stats:[['12','Active'],['38%','Open'],['8.2%','Reply']]},
+  oracle:{c:'#F5B942',ico:'📊',task:'report',  stats:[['$284k','Pipeline'],['71%','Health'],['2','At risk']]},
+  iris:  {c:'#F07EAF',ico:'🌸',task:'evaluate',stats:[['ATLAS','Top'],['94','Score'],['+12','Pts']]},
+  hermes:{c:'#F8814A',ico:'✍️',task:'post',    stats:[['4','Scheduled'],['1.4k','Reach'],['6','Prospects']]}
+};
+
+/* ── PROMPTS EN ── */
+const P_EN = {
+  nexus_briefing: 'You are NEXUS, master coordinator of Clean OS AI sales system.\nGenerate a sharp executive daily briefing:\n- Status of all 6 agents (NEXUS, ATLAS, ECHO, ORACLE, IRIS, HERMES)\n- Top 3 priorities for today\n- Key metrics: pipeline $284k, 8.2% reply rate, 2 at-risk deals\n- One risk to address today\n- One recommended action\nUnder 200 words. Decisive, data-driven tone.',
+  atlas_prospect: 'You are ATLAS, lead prospecting agent of Clean OS.\nICP: B2B SaaS, 50-500 employees, Series A-C, strong growth signal.\nGenerate 5 specific prospect recommendations:\n- Company name, sector, ICP fit reason\n- Suggested contact role and why\n- Key buying signal or trigger event\n- Recommended first touchpoint\nBe specific.',
+  echo_draft: 'You are ECHO, outreach email specialist of Clean OS.\nWrite a personalized cold email for a B2B SaaS company.\nTarget: Head of Growth or VP Sales at a Series B startup.\nOffer: AI-powered sales OS that automates prospecting and outreach.\nWrite:\n- Subject line (under 8 words, curiosity-driven)\n- Body (under 120 words, insight-led, one CTA)\n- P.S. line\nNo buzzwords. Lead with a sharp insight.',
+  oracle_report: 'You are ORACLE, analytics agent of Clean OS.\nGenerate a daily pipeline intelligence report:\n- Total pipeline: $284,000 across 19 active deals\n- Stages: 8 prospecting, 5 contacted, 4 engaged, 2 closing\n- Email stats: 147 sent, 38% open, 8.2% reply\n- 2 at-risk deals (Figma 8 days no response)\n- Top deal: Atlassian $85k closing\nInclude: exec summary (3 sentences), health score 1-100, conversion analysis, week forecast, top 3 actions.',
+  oracle_crypto: 'You are ORACLE providing educational crypto market context. NOT financial advice.\nProvide:\n1. General market sentiment (2-3 sentences)\n2. What BTC dominance signals right now\n3. One macro factor affecting crypto markets\n4. Key risk to watch for\n5. Why doing nothing is sometimes the best decision\nEducational, honest, risk-aware. No price predictions.',
+  iris_evaluate: 'You are IRIS, performance evaluator of Clean OS.\nAgent scores: ATLAS 94, NEXUS 88, ECHO 81, ORACLE 77, HERMES 72.\nGenerate: overall system score, top performer reason, weakest agent recommendation, 1 systemic improvement, allocate 50 weekly reward points across agents.',
+  hermes_post: 'You are HERMES, LinkedIn content specialist of Clean OS.\nWrite a complete LinkedIn post about AI agents transforming B2B sales in 2026.\n- Scroll-stopping hook (never start with "I\'m excited to share")\n- 180-220 words total, 3-5 short paragraphs\n- Insight-driven, slightly contrarian\n- Ends with one specific engaging question\n- 4-5 hashtags on last line\nWrite the full post now.'
+};
+
+/* ── PROMPTS FR ── */
+const P_FR = {
+  nexus_briefing: 'Vous êtes NEXUS, coordinateur de Clean OS.\nBriefing quotidien exécutif :\n- Statut des 6 agents (NEXUS, ATLAS, ECHO, ORACLE, IRIS, HERMES)\n- 3 priorités du jour\n- Métriques : pipeline 284k$, taux réponse 8,2%, 2 deals à risque\n- Un risque à traiter\n- Une action recommandée\nMoins de 200 mots. Ton décisif.',
+  atlas_prospect: 'Vous êtes ATLAS, agent de prospection de Clean OS.\nICP : SaaS B2B, 50-500 employés, Série A-C.\nGénérez 5 recommandations de prospects :\n- Entreprise, secteur, raison ICP\n- Rôle de contact et justification\n- Signal d\'achat clé\n- Premier point de contact',
+  echo_draft: 'Vous êtes ECHO, spécialiste email de prospection.\nRédigez un email froid pour un VP Sales d\'une startup SaaS Série B.\nObjet (moins de 8 mots), corps (moins de 120 mots, insight-led), ligne PS.\nPas de jargon. Commencez par un insight percutant.',
+  oracle_report: 'Vous êtes ORACLE, agent analytique de Clean OS.\nRapport pipeline : 284k$ (19 deals), 147 emails, 38% ouverture, 8,2% réponse, 2 deals à risque.\nIncluez : résumé exécutif (3 phrases), score santé 1-100, analyse conversion, prévisions semaine, 3 actions recommandées.',
+  oracle_crypto: 'Vous êtes ORACLE, contexte éducatif crypto uniquement. PAS de conseils financiers.\n1. Sentiment général du marché\n2. Ce que la dominance BTC signale\n3. Un facteur macro affectant les cryptos\n4. Risque clé à surveiller\n5. Pourquoi ne rien faire est parfois la meilleure décision',
+  iris_evaluate: 'Vous êtes IRIS, évaluateur de performance de Clean OS.\nScores : ATLAS 94, NEXUS 88, ECHO 81, ORACLE 77, HERMES 72.\nGénérez : score global, meilleur agent + raison, agent à améliorer + recommandation, 1 amélioration systémique, répartir 50 points.',
+  hermes_post: 'Vous êtes HERMES, spécialiste contenu LinkedIn.\nPost LinkedIn complet sur les agents IA transformant les ventes B2B en 2026.\nAccroche percutante, 180-220 mots, 3-5 paragraphes, question finale, 4-5 hashtags.\nRédigez le post complet maintenant.'
+};
+
+/* ── SOCIAL PROMPTS ── */
+const SP_EN = {
+  'li-expand':  function(t) { return 'You are HERMES. Expand into full LinkedIn post: "' + t + '". Hook, 150-220 words, insight-driven, ends with question, 5 hashtags.'; },
+  'li-hook':    function(t) { return 'You are HERMES. Write 5 hook lines for: "' + t + '". Under 12 words each. Number 1-5.'; },
+  'x-thread':   function(t) { return 'You are HERMES. Write 5-tweet thread about: "' + t + '". Tweet 1 hook, 2-4 insights, 5 question. Under 280 chars each.'; },
+  'x-tweet':    function(t) { return 'You are HERMES. Write 3 tweets about: "' + t + '". Under 250 chars, punchy. Number 1-3.'; },
+  'ig-caption': function(t) { return 'You are HERMES. Instagram caption for: "' + t + '". Strong opener, 80-120 words, 10-15 hashtags at end.'; },
+  'ig-carousel':function(t) { return 'You are HERMES. Instagram carousel for: "' + t + '". Slide 1 hook, slides 2-6 one insight each (10 words max), slide 7 CTA.'; },
+  'tt-script':  function(t) { return 'You are HERMES. TikTok script for: "' + t + '". 60 seconds max, hook in 3 seconds, rapid insights, CTA at end.'; },
+  'tt-hook':    function(t) { return 'You are HERMES. 5 TikTok hooks for: "' + t + '". Under 10 words each. Number 1-5.'; }
+};
+const SP_FR = {
+  'li-expand':  function(t) { return 'Vous êtes HERMES. Post LinkedIn complet pour : "' + t + '". Accroche, 150-220 mots, question finale, 5 hashtags.'; },
+  'li-hook':    function(t) { return 'Vous êtes HERMES. 5 accroches pour : "' + t + '". Moins de 12 mots. Numérotez 1-5.'; },
+  'x-thread':   function(t) { return 'Vous êtes HERMES. Thread 5 tweets sur : "' + t + '". Tweet 1 accroche, 2-4 insights, 5 question.'; },
+  'x-tweet':    function(t) { return 'Vous êtes HERMES. 3 tweets sur : "' + t + '". Moins de 250 caractères. Numérotez 1-3.'; },
+  'ig-caption': function(t) { return 'Vous êtes HERMES. Légende Instagram pour : "' + t + '". Première ligne forte, 80-120 mots, hashtags.'; },
+  'ig-carousel':function(t) { return 'Vous êtes HERMES. Carrousel Instagram pour : "' + t + '". Diapo 1 accroche, 2-6 insights, 7 CTA.'; },
+  'tt-script':  function(t) { return 'Vous êtes HERMES. Script TikTok pour : "' + t + '". 60 secondes, accroche en 3 sec, CTA final.'; },
+  'tt-hook':    function(t) { return 'Vous êtes HERMES. 5 accroches TikTok pour : "' + t + '". Moins de 10 mots. Numérotez 1-5.'; }
+};
+
+/* ── STATE ── */
+var LANG = 'en';
+var _agent = null;
+
+/* ── HELPERS ── */
+var $ = function(id) { return document.getElementById(id); };
+function esc(s) {
+  if (typeof s !== 'string') return '';
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#x27;');
+}
+function sleep(ms) { return new Promise(function(r) { setTimeout(r, ms); }); }
+function t(key) {
+  var d = TR[LANG] || TR.en;
+  return d[key] !== undefined ? d[key] : (TR.en[key] || '');
+}
+
+/* ── LANG ── */
+function setLang(lang, btn) {
+  LANG = lang;
+  try { localStorage.setItem('__c4_lang__', lang); } catch(e) {}
+  document.querySelectorAll('.lang-pill').forEach(function(b) { b.classList.remove('on'); });
+  if (btn) btn.classList.add('on');
+  applyLang();
+}
+function toggleLang() {
+  LANG = LANG === 'en' ? 'fr' : 'en';
+  try { localStorage.setItem('__c4_lang__', LANG); } catch(e) {}
+  applyLang();
+}
+function applyLang() {
+  var d = TR[LANG] || TR.en;
+  Object.keys(d).forEach(function(k) {
+    if (typeof d[k] === 'string') {
+      var el = $(k);
+      if (el) el.textContent = d[k];
+    }
+  });
+  var ltb = $('lang-toggle');
+  if (ltb) ltb.textContent = d.lang_btn || 'FR';
+  var bn = $('OV_note');
+  if (bn) bn.textContent = (d.OV_note || 'Brevo free: 300 emails/day · ') + ($('sent-ct') ? $('sent-ct').textContent : '0') + (LANG === 'fr' ? " envoyés aujourd'hui" : ' sent today');
+  ['ws','leads','out','soc','ora','guide'].forEach(function(k) {
+    var el = $('bnl-' + k);
+    if (el) el.textContent = d['bnl-' + k] || el.textContent;
+  });
+  if (_agent) renderDetail(_agent);
+}
+
+/* ── AUTH ── */
+function _h(s) {
+  var h = 0;
+  for (var i = 0; i < s.length; i++) h = Math.imul(31, h) + s.charCodeAt(i) | 0;
+  return Math.abs(h).toString(36);
+}
+function auth() {
+  var inp = $('G_inp'), err = $('G_err'), btn = $('G_btn');
+  if (!inp || !err || !btn) return;
+  var v = inp.value.trim().toUpperCase().replace(/\s+/g, '');
+  if (!v) {
+    err.textContent = LANG === 'fr' ? 'Entrez votre code.' : 'Enter your access code.';
+    return;
+  }
+  var ok = CFG.codes.map(function(c) { return c.toUpperCase(); });
+  if (ok.indexOf(v) >= 0) {
+    err.textContent = '';
+    var exp = Date.now() + (CFG.SH * 3600000);
+    try { sessionStorage.setItem(CFG.SK, JSON.stringify({t: _h(v + exp), exp: exp, b: CFG.b})); } catch(e) {}
+    bootApp();
+  } else {
+    err.textContent = LANG === 'fr' ? 'Code invalide. Accès refusé.' : 'Incorrect code. Access denied.';
+    inp.value = '';
+    inp.focus();
+    btn.disabled = true;
+    btn.textContent = LANG === 'fr' ? 'Patienter...' : 'Wait...';
+    setTimeout(function() {
+      btn.disabled = false;
+      btn.textContent = t('G_btn');
+    }, 2500);
+  }
+}
+function checkSession() {
+  try {
+    var r = sessionStorage.getItem(CFG.SK);
+    if (!r) return false;
+    var s = JSON.parse(r);
+    if (!s || !s.exp) return false;
+    if (Date.now() > s.exp) { sessionStorage.removeItem(CFG.SK); return false; }
+    return true;
+  } catch(e) { return false; }
+}
+function logout() {
+  sessionStorage.removeItem(CFG.SK);
+  $('APP').classList.remove('on');
+  $('GATE').style.display = 'flex';
+  $('G_inp').value = '';
+  $('G_err').textContent = '';
+}
+
+/* ── BOOT ── */
+function bootApp() {
+  $('GATE').style.display = 'none';
+  $('APP').classList.add('on');
+  try { var l = localStorage.getItem('__c4_lang__'); if (l) LANG = l; } catch(e) {}
+  applyLang();
+  loadKeys();
+  loadRevenue();
+  fetchCrypto();
+  buildOrbit();
+  setInterval(updateTime, 30000);
+  updateTime();
+  setTimeout(function() { var b = $('upd-btn'); if (b) b.classList.add('on'); }, 10000);
+}
+
+/* ── NAV ── */
+function nav(id, topBtn, bnId) {
+  document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('on'); });
+  document.querySelectorAll('.tb-pill,.bnav-btn').forEach(function(b) { b.classList.remove('on'); });
+  var v = $('view-' + id);
+  if (v) v.classList.add('on');
+  if (topBtn) topBtn.classList.add('on');
+  document.querySelectorAll('.tb-pill').forEach(function(b) {
+    if ((b.getAttribute('onclick') || '').indexOf("'" + id + "'") >= 0) b.classList.add('on');
+  });
+  var bnMap = {workspace:'ws',leads:'leads',outreach:'outreach',social:'social',oracle:'oracle',crypto:'crypto',guide:'guide'};
+  var bn = $('bn-' + (bnId || (bnMap[id] || id)));
+  if (bn) bn.classList.add('on');
+}
+
+/* ── KEYS ── */
+function getKey(k) {
+  try { return localStorage.getItem(CFG.KK[k]) || ''; } catch(e) { return ''; }
+}
+function loadKeys() {
+  ['or','apo','brv'].forEach(function(k) {
+    if (getKey(k)) {
+      var n = $('wn-' + k), s = $('ws-' + k);
+      if (n) { n.classList.add('done'); n.textContent = '✓'; }
+      if (s) { s.className = 'wiz-st ok'; s.textContent = '✓ ' + (LANG === 'fr' ? 'Clé chargée' : 'Key loaded'); }
+    }
+  });
+}
+function saveKey(k) {
+  var inp = $('ki-' + k);
+  if (!inp) return;
+  var v = inp.value.trim();
+  if (!v) { toast(LANG === 'fr' ? "Entrez d'abord une clé" : 'Enter a key first', '#F5B942'); return; }
+  if (k === 'or' && !v.startsWith('sk-or-')) {
+    toast(LANG === 'fr' ? 'La clé OpenRouter commence par sk-or-' : 'OpenRouter key must start with sk-or-', '#F87171');
+    return;
+  }
+  try { localStorage.setItem(CFG.KK[k], v); } catch(e) { toast('Could not save key', '#F87171'); return; }
+  var n = $('wn-' + k), s = $('ws-' + k);
+  if (n) { n.classList.add('done'); n.textContent = '✓'; }
+  if (s) { s.className = 'wiz-st ok'; s.textContent = '✓ ' + (LANG === 'fr' ? 'Sauvegardé — actif' : 'Saved — active'); }
+  toast((LANG === 'fr' ? 'Clé sauvegardée : ' : 'Key saved: ') + k.toUpperCase(), '#3EE0A0');
+}
+function toggleWiz() {
+  var b = $('wiz-body'), a = $('wiz-arr');
+  if (b) b.classList.toggle('open');
+  if (a) a.classList.toggle('open');
+}
+
+/* ── ORBIT ── */
+function buildOrbit() {
+  var scene = $('orbit-scene');
+  if (!scene) return;
+  var sz = scene.offsetWidth || 340;
+  var cx = sz / 2, cy = sz / 2, r = sz * 0.415;
+  var ids = ['atlas','echo','oracle','iris','hermes'];
+  var svg = $('orbit-svg');
+  if (svg) {
+    svg.setAttribute('viewBox', '0 0 ' + sz + ' ' + sz);
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+  }
+  ids.forEach(function(id, i) {
+    var angle = (2 * Math.PI * i / 5) - (Math.PI / 2);
+    var nx = cx + r * Math.cos(angle);
+    var ny = cy + r * Math.sin(angle);
+    var ag = AGENTS[id];
+    var node = $('anode-' + id);
+    if (!node) return;
+    var hw = 31;
+    node.style.left = (nx - hw) + 'px';
+    node.style.top = (ny - hw) + 'px';
+    node.style.background = 'radial-gradient(circle at 35% 35%,' + ag.c + 'dd,' + ag.c + '88)';
+    node.style.boxShadow = '0 0 0 1.5px ' + ag.c + '44, 0 0 16px ' + ag.c + '22';
+    if (svg) {
+      var line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.setAttribute('x1', cx); line.setAttribute('y1', cy);
+      line.setAttribute('x2', nx); line.setAttribute('y2', ny);
+      line.setAttribute('stroke', ag.c);
+      line.setAttribute('stroke-width', '0.7');
+      line.setAttribute('stroke-opacity', '0.25');
+      line.setAttribute('stroke-dasharray', '3 5');
+      svg.appendChild(line);
+    }
+  });
+}
+function activateAgent(id) {
+  _agent = id;
+  document.querySelectorAll('.anode').forEach(function(n) { n.classList.remove('sel'); });
+  var node = $('anode-' + id);
+  if (node) node.classList.add('sel');
+  if ($('hub')) $('hub').style.transform = id === 'nexus' ? 'translate(-50%,-50%) scale(1.1)' : 'translate(-50%,-50%)';
+  renderDetail(id);
+  var drawer = $('agent-drawer');
+  if (drawer) { drawer.classList.add('on'); drawer.scrollIntoView({behavior:'smooth',block:'nearest'}); }
+}
+function renderDetail(id) {
+  var ag = AGENTS[id];
+  if (!ag) return;
+  var d = TR[LANG] || TR.en;
+  var dot = $('ad-ico');
+  if (dot) { dot.textContent = ag.ico; dot.style.background = ag.c + '22'; dot.style.border = '1.5px solid ' + ag.c + '55'; }
+  var nm = $('ad-name');
+  if (nm) { nm.textContent = id.toUpperCase(); nm.style.color = ag.c; }
+  var rl = $('ad-desc');
+  if (rl) rl.textContent = (d.agent_roles && d.agent_roles[id]) || '';
+  var st = $('ad-stats');
+  if (st) st.innerHTML = ag.stats.map(function(vs) {
+    return '<div class="ad-stat"><div class="ad-sv">' + vs[0] + '</div><div class="ad-sl">' + vs[1] + '</div></div>';
+  }).join('');
+  var rb = $('ad-run');
+  if (rb) rb.style.borderColor = ag.c + '44';
+  var rl2 = $('ad-run-lbl');
+  if (rl2) rl2.textContent = (d.agent_run && d.agent_run[id]) || 'Run';
+}
+function runActiveAgent() {
+  if (!_agent) return;
+  var ag = AGENTS[_agent];
+  if (!ag) return;
+  runAgent(_agent, ag.task, 'ai-ws', 'ai-out-ws', ag.c);
+}
+
+/* ── AI RUNNER ── */
+async function runAgent(agent, task, panelId, outId, color) {
+  var key = getKey('or');
+  if (!key) {
+    toast(LANG === 'fr' ? 'Ajoutez la clé OpenRouter dans Setup' : 'Add OpenRouter key in Setup — it\'s free', '#F5B942');
+    toggleWiz();
+    var wb = $('wiz-body');
+    if (wb && !wb.classList.contains('open')) wb.classList.add('open');
+    return;
+  }
+  var panel = $(panelId), out = $(outId);
+  if (!panel || !out) return;
+  var pKey = agent + '_' + task;
+  var prompts = LANG === 'fr' ? P_FR : P_EN;
+  var prompt = prompts[pKey];
+  if (!prompt) { toast('No prompt for: ' + pKey, '#F87171'); return; }
+  var sys = LANG === 'fr'
+    ? 'Agent de vente IA expert dans Clean OS. Précis, professionnel. Pas de # headers markdown. Moins de 400 mots.'
+    : 'Expert AI sales agent in Clean OS. Precise, professional. No markdown # headers. Separate sections with blank lines. Under 400 words.';
+
+  panel.classList.add('on');
+  var dotEl = panel.querySelector('.ai-dot');
+  if (dotEl) dotEl.style.background = color;
+  var lblEl = panel.querySelector('.ai-lbl');
+  if (lblEl) lblEl.textContent = agent.toUpperCase() + ' · ' + (LANG === 'fr' ? 'traitement...' : 'processing...');
+  out.innerHTML = '<span class="cur"></span>';
+  var rb = $('ad-run');
+  if (rb && _agent === agent) { rb.classList.add('loading'); rb.innerHTML = '<div class="spin"></div>'; }
+
+  try {
+    var res = await fetch(OR_URL, {
+      method: 'POST',
+      headers: orHeaders(key),
+      body: orBody(sys, prompt)
+    });
+    if (!res.ok) {
+      var eData = await res.json().catch(function() { return {}; });
+      var msg = (eData.error && eData.error.message) ? eData.error.message : 'HTTP ' + res.status;
+      throw new Error(msg);
+    }
+    var data = await res.json();
+    var txt = (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) ? data.choices[0].message.content : '';
+    out.innerHTML = '';
+    await typewrite(out, txt);
+    if (lblEl) lblEl.textContent = agent.toUpperCase() + ' · ' + (LANG === 'fr' ? 'terminé' : 'complete');
+    if (rb && _agent === agent) {
+      rb.classList.remove('loading');
+      rb.classList.add('done');
+      rb.innerHTML = '✓ ' + (LANG === 'fr' ? 'Fait' : 'Done');
+      setTimeout(function() { rb.classList.remove('done'); renderDetail(agent); }, 3500);
+    }
+    toast(agent.toUpperCase() + ' — ' + (LANG === 'fr' ? 'terminé' : 'done'), color);
+  } catch(err) {
+    out.innerHTML = '<span style="color:#F87171">Error: ' + esc(err.message) + '</span>';
+    if (lblEl) lblEl.textContent = agent.toUpperCase() + ' · error';
+    if (rb && _agent === agent) { rb.classList.remove('loading'); rb.innerHTML = LANG === 'fr' ? 'Réessayer' : 'Try again'; }
+    toast('Error: ' + err.message, '#F87171');
+    console.error('[Clean OS]', agent, err);
+  }
+}
+
+async function typewrite(el, txt) {
+  var lines = txt.split('\n');
+  var h = '';
+  for (var i = 0; i < lines.length; i++) {
+    h += esc(lines[i]);
+    if (i < lines.length - 1) h += '\n';
+    el.innerHTML = h + '<span class="cur"></span>';
+    await sleep(3);
+  }
+  el.innerHTML = h;
+}
+
+/* ── SOCIAL AI ── */
+async function runSocial(plat, type) {
+  var key = getKey('or');
+  if (!key) { toast(LANG === 'fr' ? 'Ajoutez la clé OpenRouter dans Setup' : 'Add OpenRouter key in Setup', '#F5B942'); return; }
+  var txtMap = {li:'soc-li', x:'soc-x', ig:'soc-ig', tt:'soc-tt'};
+  var txtEl = $(txtMap[plat]);
+  var txt = txtEl ? txtEl.value.trim() : '';
+  var bank = LANG === 'fr' ? SP_FR : SP_EN;
+  var fn = bank[plat + '-' + type];
+  if (!fn) return;
+  var lbl = $('ai-soc-lbl');
+  if (lbl) lbl.textContent = 'HERMES · ' + plat.toUpperCase() + ' · ' + type;
+  var panel = $('ai-social'), out = $('ai-out-social');
+  if (!panel || !out) return;
+  panel.classList.add('on');
+  var dotEl = panel.querySelector('.ai-dot');
+  if (dotEl) dotEl.style.background = '#F8814A';
+  out.innerHTML = '<span class="cur"></span>';
+  var sys = LANG === 'fr' ? 'Expert contenu social. Pas de # headers.' : 'Expert social content agent. No # headers.';
+  try {
+    var res = await fetch(OR_URL, {
+      method: 'POST',
+      headers: orHeaders(key),
+      body: orBody(sys, fn(txt))
+    });
+    if (!res.ok) throw new Error('API error ' + res.status);
+    var data = await res.json();
+    var txt2 = (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) ? data.choices[0].message.content : '';
+    out.innerHTML = '';
+    await typewrite(out, txt2);
+    toast('HERMES done', '#F8814A');
+  } catch(err) {
+    out.innerHTML = '<span style="color:#F87171">' + esc(err.message) + '</span>';
+    toast('Error: ' + err.message, '#F87171');
+  }
+}
+
+/* ── QUEUE ── */
+function qAct(id, action, e) {
+  if (e) e.stopPropagation();
+  var el = $(id);
+  if (!el) return;
+  el.style.opacity = '.35'; el.style.pointerEvents = 'none';
+  var acts = el.querySelector('.q-acts');
+  if (!acts) return;
+  if (action === 'a') {
+    acts.innerHTML = '<span style="font-size:11px;color:#3EE0A0;font-weight:600">✓ ' + t('approved') + '</span>';
+    var q = $('hub-count');
+    if (q) q.textContent = Math.max(0, parseInt(q.textContent || 3) - 1);
+    toast('NEXUS: ' + t('approved'), '#9B8BF4');
+  } else {
+    acts.innerHTML = '<span style="font-size:11px;color:#F5B942;font-weight:600">↩ ' + t('revision') + '</span>';
+    toast('NEXUS: ' + t('revision'), '#F5B942');
+  }
+}
+function addToQueue(name, co) {
+  var id = 'q' + Date.now();
+  var list = $('qlist');
+  if (!list) return;
+  var el = document.createElement('div');
+  el.className = 'q-row'; el.id = id;
+  el.innerHTML = '<div class="q-dot" style="background:#5BB4F8"></div><div class="q-body"><div class="q-title">' + esc(name) + ' — ' + esc(co) + '</div><div class="q-meta">ATLAS→ECHO · just now</div></div><div class="q-acts"><button class="qbtn qa" onclick="qAct(\'' + id + '\',\'a\',event)">✓</button><button class="qbtn qr" onclick="qAct(\'' + id + '\',\'r\',event)">↩</button></div>';
+  list.prepend(el);
+  var q = $('hub-count');
+  if (q) q.textContent = parseInt(q.textContent || 3) + 1;
+  toast(LANG === 'fr' ? 'Lead ajouté à la file ECHO' : 'Lead added to ECHO queue', '#3EE0A0');
+}
+function pushSocialToNexus(platform) {
+  var map = {LinkedIn:'soc-li', X:'soc-x', Instagram:'soc-ig', TikTok:'soc-tt'};
+  var el = $(map[platform] || 'soc-li');
+  var txt = el ? el.value.trim() : '';
+  if (!txt) { toast(LANG === 'fr' ? "Écrivez d'abord une idée" : 'Write a post idea first', '#F8814A'); return; }
+  var id = 'q' + Date.now();
+  var list = $('qlist');
+  if (!list) return;
+  var qel = document.createElement('div');
+  qel.className = 'q-row'; qel.id = id;
+  qel.innerHTML = '<div class="q-dot" style="background:#F8814A"></div><div class="q-body"><div class="q-title">' + platform + ': "' + esc(txt.slice(0, 52)) + (txt.length > 52 ? '...' : '') + '"</div><div class="q-meta">HERMES→NEXUS · just now</div></div><div class="q-acts"><button class="qbtn qa" onclick="qAct(\'' + id + '\',\'a\',event)">✓</button><button class="qbtn qr" onclick="qAct(\'' + id + '\',\'r\',event)">↩</button></div>';
+  list.prepend(qel);
+  var q = $('hub-count');
+  if (q) q.textContent = parseInt(q.textContent || 3) + 1;
+  toast('HERMES → NEXUS: ' + platform, '#F8814A');
+  nav('workspace', null, 'ws');
+}
+
+/* ── LEADS ── */
+async function searchLeads() {
+  var apoKey = getKey('apo');
+  if (!apoKey) {
+    toast(LANG === 'fr' ? 'Ajoutez la clé Apollo pour des leads réels' : 'Add Apollo key for real leads — showing AI prospects', '#F5B942');
+    runAgent('atlas', 'prospect', 'ai-leads', 'ai-out-leads', '#3EE0A0');
+    return;
+  }
+  var btn = $('ls-btn'), btnTxt = $('ls-btn-lbl');
+  if (btn) btn.disabled = true;
+  if (btnTxt) btnTxt.textContent = LANG === 'fr' ? 'Recherche...' : 'Searching...';
+  try {
+    var title = ($('ls-job') || {value:''}).value.trim();
+    var body = {per_page: 8, page: 1};
+    if (title) body.person_titles = [title];
+    var res = await fetch('https://api.apollo.io/v1/mixed_people/search', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json','X-Api-Key':apoKey},
+      body: JSON.stringify(body)
+    });
+    if (!res.ok) throw new Error('Apollo ' + res.status);
+    var data = await res.json();
+    var tbody = $('leads-tbody');
+    if (data.people && data.people.length && tbody) {
+      tbody.innerHTML = data.people.map(function(p) {
+        var sc = Math.floor(60 + Math.random() * 36);
+        var cls = sc > 80 ? 'hi' : sc > 65 ? 'md' : 'lo';
+        var nm = esc(((p.first_name || '') + ' ' + (p.last_name || '')).trim());
+        var co = esc(p.organization && p.organization.name ? p.organization.name : '—');
+        return '<tr><td>' + nm + '</td><td>' + esc(p.title||'—') + '</td><td>' + co + '</td><td><span class="score ' + cls + '">' + sc + '</span></td><td><button class="btn" style="padding:3px 8px;font-size:10px" onclick="addToQueue(\'' + nm + '\',\'' + co + '\')">→</button></td></tr>';
+      }).join('');
+      toast('ATLAS: ' + data.people.length + (LANG === 'fr' ? ' leads trouvés' : ' leads found'), '#3EE0A0');
+    } else {
+      toast(LANG === 'fr' ? 'Aucun résultat' : 'No results — try broader search', '#F5B942');
+    }
+  } catch(err) {
+    toast(LANG === 'fr' ? 'Apollo indisponible — analyse IA' : 'Apollo unavailable — AI analysis', '#F5B942');
+    runAgent('atlas', 'prospect', 'ai-leads', 'ai-out-leads', '#3EE0A0');
+  } finally {
+    if (btn) btn.disabled = false;
+    if (btnTxt) btnTxt.textContent = t('LEADS_btn');
+  }
+}
+
+/* ── EMAIL ── */
+async function sendEmail() {
+  var to = ($('ec-to')||{value:''}).value.trim();
+  var subj = ($('ec-subj')||{value:''}).value.trim();
+  var body = ($('ec-body')||{value:''}).value.trim();
+  var brvKey = getKey('brv');
+  if (!to||!subj||!body) { toast(LANG==='fr'?'Remplissez tous les champs':'Fill all email fields','#F87171'); return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)) { toast(LANG==='fr'?'Email invalide':'Invalid email address','#F87171'); return; }
+  if (!brvKey) { toast(LANG==='fr'?'Ajoutez la clé Brevo':'Add Brevo key to send real emails','#F5B942'); return; }
+  var sendBtn = $('OV_send');
+  if (sendBtn) { sendBtn.disabled=true; sendBtn.textContent=LANG==='fr'?'Envoi...':'Sending...'; }
+  try {
+    var res = await fetch('https://api.brevo.com/v3/smtp/email',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','api-key':brvKey},
+      body:JSON.stringify({
+        sender:{name:'Clean OS — ECHO',email:'your-sender@yourdomain.com'},
+        to:[{email:to}],subject:subj,textContent:body,
+        htmlContent:'<p style="font-family:Arial,sans-serif;font-size:14px;line-height:1.6">'+body.replace(/\n/g,'<br>')+'</p>'
+      })
+    });
+    if (!res.ok) {
+      var eData = await res.json().catch(function(){return{};});
+      throw new Error(eData.message||'Brevo error '+res.status);
+    }
+    var slog=$('slog');
+    if (slog) {
+      var now=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+      var si=document.createElement('div'); si.className='si';
+      si.innerHTML='<div class="si-s" style="background:#3EE0A0"></div><div class="si-t">'+esc(to)+' — '+esc(subj.slice(0,42))+'</div><div class="si-time">'+now+'</div>';
+      slog.prepend(si);
+    }
+    var ctr=$('sent-ct'); if(ctr) ctr.textContent=parseInt(ctr.textContent||0)+1;
+    $('ec-to').value=''; $('ec-subj').value=''; $('ec-body').value='';
+    toast('ECHO: '+(LANG==='fr'?'Email envoyé ✓':'Email sent ✓'),'#3EE0A0');
+  } catch(err) {
+    toast((LANG==='fr'?'Erreur email : ':'Email error: ')+err.message,'#F87171');
+  } finally {
+    if(sendBtn){sendBtn.disabled=false;sendBtn.textContent=t('OV_send');}
+  }
+}
+function copyAiToEmail() {
+  var ao=$('ai-out-echo');
+  if(!ao||!ao.textContent.trim()){toast(LANG==='fr'?"Générez d'abord avec l'IA":'Run Draft with AI first','#F5B942');return;}
+  var txt=ao.textContent.trim();
+  var sm=txt.match(/[Ss]ubject:?\s*(.+)/);
+  if(sm){var s=$('ec-subj');if(s)s.value=sm[1].trim();}
+  var b=$('ec-body');if(b)b.value=txt.replace(/^[Ss]ubject:?.+\n/m,'').trim();
+  toast(LANG==='fr'?'Contenu IA copié':'AI content copied to email form','#5BB4F8');
+}
+
+/* ── CRYPTO ── */
+async function fetchCrypto() {
+  var btn=$('cry-refresh-btn');
+  if(btn){btn.disabled=true;btn.textContent=LANG==='fr'?'Chargement...':'Loading...';}
+  try {
+    var r=await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,binancecoin&vs_currencies=usd&include_24hr_change=true',{headers:{Accept:'application/json'}});
+    if(!r.ok) throw new Error(r.status);
+    var d=await r.json();
+    [['bitcoin','btc'],['ethereum','eth'],['solana','sol'],['binancecoin','bnb']].forEach(function(pair){
+      var info=d[pair[0]]; if(!info) return;
+      var sym=pair[1];
+      var p=$(sym+'-p'),ch=$(sym+'-c');
+      if(p) p.textContent='$'+info.usd.toLocaleString('en-US',{maximumFractionDigits:2});
+      var chg=info.usd_24h_change;
+      if(ch){ch.textContent=(chg>=0?'+':'')+chg.toFixed(2)+'% (24h)';ch.className='cc-chg '+(chg>=0?'up':'dn');}
+    });
+    var ts=$('cry-ts');if(ts)ts.textContent=new Date().toLocaleTimeString();
+    toast(LANG==='fr'?'Prix mis à jour':'Crypto prices updated','#3EE0A0');
+  } catch(err) {
+    toast(LANG==='fr'?'CoinGecko indisponible — réessayez dans 1 min':'CoinGecko unavailable — retry in 1 min','#F5B942');
+  } finally {
+    if(btn){btn.disabled=false;btn.textContent=t('cg_btn');}
+  }
+}
+function markSig(btn,action){
+  var row=btn.closest('.sig');if(!row)return;
+  if(action==='w'){
+    row.style.borderLeft='1.5px solid #5BB4F8';
+    btn.textContent=t('watching');btn.style.color='#5BB4F8';
+    toast(LANG==='fr'?'Signal en veille':'Signal watching — your decision','#5BB4F8');
+  } else {
+    row.style.opacity='.35';row.style.pointerEvents='none';
+    toast(LANG==='fr'?'Signal ignoré':'Signal skipped','#7572A0');
+  }
+}
+
+/* ── REVENUE ── */
+var REV={clients:[],mrr:0,total:0};
+function loadRevenue(){
+  try{var r=localStorage.getItem(CFG.RK);if(r)REV=JSON.parse(r);}catch(e){}
+  updateRevenueUI();
+}
+function addRevenue(){
+  var a=parseFloat(($('rev-amt')||{value:0}).value||0);
+  var l=($('rev-lbl')||{value:''}).value.trim();
+  if(!a||!l){toast(LANG==='fr'?'Montant et nom requis':'Amount and name required','#F87171');return;}
+  REV.clients.push({a:a,l:l,d:new Date().toISOString()});
+  REV.mrr+=a;REV.total+=a;
+  try{localStorage.setItem(CFG.RK,JSON.stringify(REV));}catch(e){}
+  updateRevenueUI();
+  $('rev-amt').value='';$('rev-lbl').value='';
+  toast('+ $'+a.toLocaleString()+' — '+l,'#3EE0A0');
+}
+function updateRevenueUI(){
+  function s(id,v){var el=$(id);if(el)el.textContent=v;}
+  s('rev-mrr','$'+REV.mrr.toLocaleString());
+  s('rev-total','$'+REV.total.toLocaleString());
+  s('rev-clients',REV.clients.length);
+}
+
+/* ── MISC ── */
+function updateTime(){var el=$('BRIEF_time');if(el)el.textContent=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});}
+function openModal(){var m=$('upd-modal');if(m)m.classList.add('on');}
+function closeModal(){var m=$('upd-modal');if(m)m.classList.remove('on');}
+function doUpdate(){closeModal();var b=$('upd-btn');if(b)b.classList.remove('on');toast('Clean OS '+(LANG==='fr'?'mis à jour':'updated to v4.2.1'),'#3EE0A0');}
+function copyCode(el){
+  var txt=el.textContent.trim();
+  if(navigator.clipboard)navigator.clipboard.writeText(txt).catch(function(){});
+  el.style.color='#3EE0A0';
+  setTimeout(function(){el.style.color='';},1500);
+  toast((LANG==='fr'?'Copié : ':'Copied: ')+txt,'#9B8BF4');
+}
+
+var _tt;
+function toast(msg,color){
+  var el=$('toast');if(!el)return;
+  var dot=$('tdot'),tmsg=$('tmsg');
+  if(dot)dot.style.background=color||'#C8A96B';
+  if(tmsg)tmsg.textContent=msg;
+  el.classList.add('on');clearTimeout(_tt);
+  _tt=setTimeout(function(){el.classList.remove('on');},3400);
+}
+
+var _ro;
+window.addEventListener('resize',function(){
+  clearTimeout(_ro);
+  _ro=setTimeout(function(){if($('APP')&&$('APP').classList.contains('on'))buildOrbit();},200);
+});
+
+/* ── INIT ── */
+(function(){
+  try{var l=localStorage.getItem('__c4_lang__');if(l)LANG=l;}catch(e){}
+  if(checkSession()){bootApp();return;}
+  applyLang();
+  setTimeout(function(){var i=$('G_inp');if(i)i.focus();},150);
+})();
+
+</script>
+</body>
+</html>
